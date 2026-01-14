@@ -2,6 +2,7 @@ import { relations, sql } from 'drizzle-orm';
 import {
   boolean,
   check,
+  date,
   decimal,
   int,
   mysqlTable,
@@ -40,8 +41,8 @@ export const booking = mysqlTable(
     room_id: int('room_id')
       .notNull()
       .references(() => room.id),
-    start_date: timestamp('start_date').notNull(),
-    end_date: timestamp('end_date').notNull(),
+    start_date: date('start_date', { mode: 'string' }).notNull(),
+    end_date: date('end_date', { mode: 'string' }).notNull(),
     status: varchar('status', { length: 20 }).default('confirmed'),
     additional_note: text('additional_note'),
   },

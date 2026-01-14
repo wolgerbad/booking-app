@@ -1,8 +1,9 @@
 import Hero from '@/components/hero';
-import { whatever } from './(auth)/actions';
+import { getBookedDates } from '@/lib/booking';
+import { startOfDay } from 'date-fns';
 import Image from 'next/image';
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="mt-32">
       <Image

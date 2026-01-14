@@ -1,5 +1,8 @@
+import { db } from '@/db';
+import { user } from '@/db/schema';
 import { env } from '@/utils/envSchema';
 import { compare, hash } from 'bcryptjs';
+import { eq } from 'drizzle-orm';
 import { jwtVerify, SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 
@@ -43,6 +46,16 @@ export async function getSession() {
   if (!token) return { error: 'No cookie found' };
 
   const session = await jwtVerify(token, secret);
+  if (!session) return { error: 'Not verified.' };
 
-  return session;
+  const userId = session.payload.userId;
+
+  const [authenticatedUser] = await db
+    .select()
+    .from(user)
+    .where(eq(user.id, +userId));
+
+  const safeUser = { ...authenticatedUser, hashed_password: null };
+
+  return safeUser;
 }

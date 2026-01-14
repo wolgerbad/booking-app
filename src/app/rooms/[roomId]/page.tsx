@@ -10,12 +10,26 @@ import { FaArrowLeft } from 'react-icons/fa6';
 import Link from 'next/link';
 import { getRoom } from '@/lib/room';
 import { DateRangePicker } from '@/components/date-range-picker';
+import { getSession } from '@/lib/session';
+import DateContainer from '@/components/date-container';
+import { Button } from '@/components/ui/button';
+import ReservationForm from './reservation-form';
+import { startOfDay } from 'date-fns';
+import { getBookedDates } from '@/lib/booking';
 
 export default async function RoomPage({
   params,
 }: {
   params: Promise<{ roomId: string }>;
 }) {
+  const bookedDates = await getBookedDates();
+  const alteredBookedDates = bookedDates.map((date) => ({
+    from: startOfDay(new Date(date.from)),
+    to: startOfDay(new Date(date.to)),
+  }));
+
+  const session = await getSession();
+
   const roomId = (await params).roomId;
 
   const room = await getRoom(+roomId);
@@ -104,86 +118,23 @@ export default async function RoomPage({
         </div>
       </div>
 
-      {/* Right Column - Booking Card */}
-      <div className="grid grid-cols-2">
-        <div className="border border-gray-800 sticky top-8">
-          <div className="p-6 border-b border-gray-800">
-            <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-3xl font-semibold text-gray-200">
-                ${room.price}
-              </span>
-              <span className="text-gray-400">/ night</span>
-            </div>
-            <p className="text-gray-400 text-sm">Prices may vary by dates</p>
-          </div>
-
-          {/* Booking Form UI */}
-          <div className="p-6 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Check-in
-              </label>
-              <input
-                type="date"
-                className="w-full bg-transparent border border-gray-700 px-4 py-3 text-gray-300 focus:outline-none focus:border-yellow-600"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Check-out
-              </label>
-              <input
-                type="date"
-                className="w-full bg-transparent border border-gray-700 px-4 py-3 text-gray-300 focus:outline-none focus:border-yellow-600"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Guests
-              </label>
-              <select className="w-full bg-transparent border border-gray-700 px-4 py-3 text-gray-300 focus:outline-none focus:border-yellow-600">
-                {Array.from({ length: room.capacity }, (val, idx) => (
-                  <option key={idx} value={idx + 1}>
-                    {idx + 1} Guest
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="pt-4 border-t border-gray-800">
-              <div className="flex justify-between text-gray-300 mb-2">
-                <span>
-                  ${room.price} x {room.capacity} nights
-                </span>
-                <span>${+room.price * room.capacity}</span>
-              </div>
-              <div className="flex justify-between text-gray-300 font-semibold text-lg pt-4 border-t border-gray-800">
-                <span>Total</span>
-                <span className="text-yellow-600">
-                  ${+room.price * room.capacity}
-                </span>
-              </div>
-            </div>
-
-            <button className="w-full bg-yellow-600 hover:bg-yellow-700 text-gray-800 font-medium py-4 px-6 transition-colors mt-6">
-              Reserve
-            </button>
-
-            <p className="text-gray-400 text-xs text-center mt-4">
-              You won&apos;t be charged yet
-            </p>
-          </div>
-        </div>
+      <div className="grid grid-cols-2 mt-12">
         <div>
-          <DateRangePicker
-            // onUpdate={(values) => console.log(values)}
-            initialDateFrom="2023-01-01"
-            initialDateTo="2023-12-31"
-            align="start"
-            locale="en-GB"
-            showCompare={false}
-          />
+          <DateContainer bookedDates={alteredBookedDates} />
         </div>
+        {session?.error ? (
+          <div className="flex justify-center items-center bg-slate-700 text-white font-semibold text-xl">
+            <span>
+              You must{' '}
+              <Link className="text-yellow-600 underline" href="/login">
+                login
+              </Link>{' '}
+              to reserve the cabin.
+            </span>
+          </div>
+        ) : (
+          <ReservationForm room={room} userId={session.id} />
+        )}
       </div>
     </div>
   );

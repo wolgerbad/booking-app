@@ -1,25 +1,8 @@
 'use client';
 
-import React, { type FC, useState, useEffect, useRef, JSX } from 'react';
-import { Button } from './ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import React, { type FC, useState, useEffect, useMemo, JSX } from 'react';
 import { Calendar } from './ui/calendar';
-import { DateInput } from './date-input';
-import { Label } from './ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select';
-import { Switch } from './ui/switch';
-import {
-  ChevronUpIcon,
-  ChevronDownIcon,
-  CheckIcon,
-} from '@radix-ui/react-icons';
-import { cn } from '@/lib/utils';
+import { differenceInDays } from 'date-fns';
 
 export interface DateRangePickerProps {
   /** Click handler for applying the updates from DateRangePicker. */
@@ -28,25 +11,13 @@ export interface DateRangePickerProps {
   initialDateFrom?: Date | string;
   /** Initial value for end date */
   initialDateTo?: Date | string;
-  /** Initial value for start date for compare */
-  initialCompareFrom?: Date | string;
-  /** Initial value for end date for compare */
-  initialCompareTo?: Date | string;
-  /** Alignment of popover */
-  align?: 'start' | 'center' | 'end';
-  /** Option for locale */
-  locale?: string;
-  /** Option for showing compare feature */
-  showCompare?: boolean;
+  /** Room price per night */
+  roomPrice?: number | string;
+  bookedDates: {
+    from: Date;
+    to: Date;
+  }[];
 }
-
-const formatDate = (date: Date, locale: string = 'en-us'): string => {
-  return date.toLocaleDateString(locale, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-};
 
 const getDateAdjustedForTimezone = (dateInput: Date | string): Date => {
   if (typeof dateInput === 'string') {
@@ -54,76 +25,38 @@ const getDateAdjustedForTimezone = (dateInput: Date | string): Date => {
     const parts = dateInput.split('-').map((part) => parseInt(part, 10));
     // Create a new Date object using the local timezone
     // Note: Month is 0-indexed, so subtract 1 from the month part
-    const date = new Date(parts[0], parts[1] - 1, parts[2]);
-    return date;
-  } else {
-    // If dateInput is already a Date object, return it directly
-    return dateInput;
+    return new Date(parts[0], parts[1] - 1, parts[2]);
   }
+  // If dateInput is already a Date object, return it directly
+  return dateInput;
 };
 
 interface DateRange {
-  from: Date;
-  to: Date | undefined;
+  from: Date | undefined;
+  to?: Date;
 }
-
-interface Preset {
-  name: string;
-  label: string;
-}
-
-// Define presets
-const PRESETS: Preset[] = [
-  { name: 'today', label: 'Today' },
-  { name: 'yesterday', label: 'Yesterday' },
-  { name: 'last7', label: 'Last 7 days' },
-  { name: 'last14', label: 'Last 14 days' },
-  { name: 'last30', label: 'Last 30 days' },
-  { name: 'thisWeek', label: 'This Week' },
-  { name: 'lastWeek', label: 'Last Week' },
-  { name: 'thisMonth', label: 'This Month' },
-  { name: 'lastMonth', label: 'Last Month' },
-];
 
 /** The DateRangePicker component allows a user to select a range of dates */
 export const DateRangePicker: FC<DateRangePickerProps> & {
   filePath: string;
 } = ({
-  initialDateFrom = new Date(new Date().setHours(0, 0, 0, 0)),
+  initialDateFrom,
   initialDateTo,
-  initialCompareFrom,
-  initialCompareTo,
   onUpdate,
-  align = 'end',
-  locale = 'en-US',
-  showCompare = true,
+  roomPrice,
+  bookedDates,
 }): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
+  const initialFromDate = initialDateFrom
+    ? getDateAdjustedForTimezone(initialDateFrom)
+    : undefined;
+  const initialToDate = initialDateTo
+    ? getDateAdjustedForTimezone(initialDateTo)
+    : undefined;
 
   const [range, setRange] = useState<DateRange>({
-    from: getDateAdjustedForTimezone(initialDateFrom),
-    to: initialDateTo
-      ? getDateAdjustedForTimezone(initialDateTo)
-      : getDateAdjustedForTimezone(initialDateFrom),
+    from: initialFromDate,
+    to: initialToDate,
   });
-  const [rangeCompare, setRangeCompare] = useState<DateRange | undefined>(
-    initialCompareFrom
-      ? {
-          from: new Date(new Date(initialCompareFrom).setHours(0, 0, 0, 0)),
-          to: initialCompareTo
-            ? new Date(new Date(initialCompareTo).setHours(0, 0, 0, 0))
-            : new Date(new Date(initialCompareFrom).setHours(0, 0, 0, 0)),
-        }
-      : undefined
-  );
-
-  // Refs to store the values of range and rangeCompare when the date picker is opened
-  const openedRangeRef = useRef<DateRange | undefined>();
-  const openedRangeCompareRef = useRef<DateRange | undefined>();
-
-  const [selectedPreset, setSelectedPreset] = useState<string | undefined>(
-    undefined
-  );
 
   const [isSmallScreen, setIsSmallScreen] = useState(
     typeof window !== 'undefined' ? window.innerWidth < 960 : false
@@ -142,430 +75,88 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
     };
   }, []);
 
-  const getPresetRange = (presetName: string): DateRange => {
-    const preset = PRESETS.find(({ name }) => name === presetName);
-    if (!preset) throw new Error(`Unknown date range preset: ${presetName}`);
-    const from = new Date();
-    const to = new Date();
-    const first = from.getDate() - from.getDay();
-
-    switch (preset.name) {
-      case 'today':
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-        break;
-      case 'yesterday':
-        from.setDate(from.getDate() - 1);
-        from.setHours(0, 0, 0, 0);
-        to.setDate(to.getDate() - 1);
-        to.setHours(23, 59, 59, 999);
-        break;
-      case 'last7':
-        from.setDate(from.getDate() - 6);
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-        break;
-      case 'last14':
-        from.setDate(from.getDate() - 13);
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-        break;
-      case 'last30':
-        from.setDate(from.getDate() - 29);
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-        break;
-      case 'thisWeek':
-        from.setDate(first);
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-        break;
-      case 'lastWeek':
-        from.setDate(from.getDate() - 7 - from.getDay());
-        to.setDate(to.getDate() - to.getDay() - 1);
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-        break;
-      case 'thisMonth':
-        from.setDate(1);
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-        break;
-      case 'lastMonth':
-        from.setMonth(from.getMonth() - 1);
-        from.setDate(1);
-        from.setHours(0, 0, 0, 0);
-        to.setDate(0);
-        to.setHours(23, 59, 59, 999);
-        break;
-    }
-
-    return { from, to };
-  };
-
-  const setPreset = (preset: string): void => {
-    const range = getPresetRange(preset);
-    setRange(range);
-    if (rangeCompare) {
-      const rangeCompare = {
-        from: new Date(
-          range.from.getFullYear() - 1,
-          range.from.getMonth(),
-          range.from.getDate()
-        ),
-        to: range.to
-          ? new Date(
-              range.to.getFullYear() - 1,
-              range.to.getMonth(),
-              range.to.getDate()
-            )
-          : undefined,
-      };
-      setRangeCompare(rangeCompare);
-    }
-  };
-
-  const checkPreset = (): void => {
-    for (const preset of PRESETS) {
-      const presetRange = getPresetRange(preset.name);
-
-      const normalizedRangeFrom = new Date(range.from);
-      normalizedRangeFrom.setHours(0, 0, 0, 0);
-      const normalizedPresetFrom = new Date(
-        presetRange.from.setHours(0, 0, 0, 0)
-      );
-
-      const normalizedRangeTo = new Date(range.to ?? 0);
-      normalizedRangeTo.setHours(0, 0, 0, 0);
-      const normalizedPresetTo = new Date(
-        presetRange.to?.setHours(0, 0, 0, 0) ?? 0
-      );
-
-      if (
-        normalizedRangeFrom.getTime() === normalizedPresetFrom.getTime() &&
-        normalizedRangeTo.getTime() === normalizedPresetTo.getTime()
-      ) {
-        setSelectedPreset(preset.name);
-        return;
+  // Disable dates that would result in more than 4 days (3 nights)
+  const disabledDates = useMemo(() => {
+    return (date: Date) => {
+      if (range.from) {
+        // Disable dates before the selected start date
+        // and dates more than 3 days after the start date (max 4 days = 3 nights)
+        console.log('range.from', range.from);
+        const daysDifference = differenceInDays(date, range.from);
+        return daysDifference < 0 || daysDifference > 3;
       }
+      return false;
+    };
+  }, [range.from]);
+
+  // Calculate nights and total price
+  const nights = useMemo(() => {
+    if (range.from && range.to) {
+      return differenceInDays(range.to, range.from);
     }
+    return 0;
+  }, [range.from, range.to]);
 
-    setSelectedPreset(undefined);
-  };
-
-  const resetValues = (): void => {
-    setRange({
-      from:
-        typeof initialDateFrom === 'string'
-          ? getDateAdjustedForTimezone(initialDateFrom)
-          : initialDateFrom,
-      to: initialDateTo
-        ? typeof initialDateTo === 'string'
-          ? getDateAdjustedForTimezone(initialDateTo)
-          : initialDateTo
-        : typeof initialDateFrom === 'string'
-        ? getDateAdjustedForTimezone(initialDateFrom)
-        : initialDateFrom,
-    });
-    setRangeCompare(
-      initialCompareFrom
-        ? {
-            from:
-              typeof initialCompareFrom === 'string'
-                ? getDateAdjustedForTimezone(initialCompareFrom)
-                : initialCompareFrom,
-            to: initialCompareTo
-              ? typeof initialCompareTo === 'string'
-                ? getDateAdjustedForTimezone(initialCompareTo)
-                : initialCompareTo
-              : typeof initialCompareFrom === 'string'
-              ? getDateAdjustedForTimezone(initialCompareFrom)
-              : initialCompareFrom,
-          }
-        : undefined
-    );
-  };
-
-  useEffect(() => {
-    checkPreset();
-  }, [range]);
-
-  const PresetButton = ({
-    preset,
-    label,
-    isSelected,
-  }: {
-    preset: string;
-    label: string;
-    isSelected: boolean;
-  }): JSX.Element => (
-    <Button
-      className={cn(isSelected && 'pointer-events-none')}
-      variant="ghost"
-      onClick={() => {
-        setPreset(preset);
-      }}
-    >
-      <>
-        <span className={cn('pr-2 opacity-0', isSelected && 'opacity-70')}>
-          <CheckIcon width={18} height={18} />
-        </span>
-        {label}
-      </>
-    </Button>
-  );
-
-  // Helper function to check if two date ranges are equal
-  const areRangesEqual = (a?: DateRange, b?: DateRange): boolean => {
-    if (!a || !b) return a === b; // If either is undefined, return true if both are undefined
-    return (
-      a.from.getTime() === b.from.getTime() &&
-      (!a.to || !b.to || a.to.getTime() === b.to.getTime())
-    );
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      openedRangeRef.current = range;
-      openedRangeCompareRef.current = rangeCompare;
+  const totalPrice = useMemo(() => {
+    if (roomPrice && nights > 0) {
+      const price =
+        typeof roomPrice === 'string' ? parseFloat(roomPrice) : roomPrice;
+      return price * nights;
     }
-  }, [isOpen]);
+    return 0;
+  }, [roomPrice, nights]);
+
+  // Call onUpdate when range changes
+  useEffect(() => {
+    onUpdate?.({ range });
+  }, [range, onUpdate]);
 
   return (
-    <Popover
-      modal={true}
-      open={isOpen}
-      onOpenChange={(open: boolean) => {
-        if (!open) {
-          resetValues();
-        }
-        setIsOpen(open);
-      }}
-    >
-      <PopoverTrigger asChild>
-        <Button size={'lg'} variant="outline">
-          <div className="text-right">
-            <div className="py-1">
-              <div>{`${formatDate(range.from, locale)}${
-                range.to != null ? ' - ' + formatDate(range.to, locale) : ''
-              }`}</div>
-            </div>
-            {rangeCompare != null && (
-              <div className="opacity-60 text-xs -mt-1">
-                <>
-                  vs. {formatDate(rangeCompare.from, locale)}
-                  {rangeCompare.to != null
-                    ? ` - ${formatDate(rangeCompare.to, locale)}`
-                    : ''}
-                </>
-              </div>
-            )}
+    <div className="w-full h-full border-l border-t border-b border-gray-800">
+      <Calendar
+        bookedDates={bookedDates}
+        className="w-full px-8 py-4"
+        mode="range"
+        onSelect={(value: { from?: Date; to?: Date } | undefined) => {
+          if (value?.from) {
+            setRange({ from: value.from, to: value.to });
+          }
+        }}
+        selected={range}
+        disabled={disabledDates}
+        numberOfMonths={isSmallScreen ? 1 : 2}
+        defaultMonth={(() => {
+          const base = range.from ?? initialFromDate ?? new Date();
+          const month = new Date(base);
+          month.setMonth(month.getMonth() - (isSmallScreen ? 0 : 1));
+          return month;
+        })()}
+      />
+
+      {/* Display price calculation */}
+      {roomPrice && range.from && range.to && nights > 0 ? (
+        <div className="p-4 border border-gray-800 bg-yellow-600 text-slate-800 font-semibold text-xl">
+          <div className="flex justify-between items-center">
+            <span className="">
+              $
+              {typeof roomPrice === 'string'
+                ? parseFloat(roomPrice)
+                : roomPrice}{' '}
+              × {nights} night{nights !== 1 ? 's' : ''}
+            </span>
+            <span className="text-slate-800 text-2xl">
+              ${totalPrice.toFixed(2)}
+            </span>
           </div>
-          <div className="pl-1 opacity-60 -mr-2 scale-125">
-            {isOpen ? (
-              <ChevronUpIcon width={24} />
-            ) : (
-              <ChevronDownIcon width={24} />
-            )}
-          </div>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent align={align} className="w-auto">
-        <div className="flex py-2">
-          <div className="flex">
-            <div className="flex flex-col">
-              <div className="flex flex-col lg:flex-row gap-2 px-3 justify-end items-center lg:items-start pb-4 lg:pb-0">
-                {showCompare && (
-                  <div className="flex items-center space-x-2 pr-4 py-1">
-                    <Switch
-                      defaultChecked={Boolean(rangeCompare)}
-                      onCheckedChange={(checked: boolean) => {
-                        if (checked) {
-                          if (!range.to) {
-                            setRange({
-                              from: range.from,
-                              to: range.from,
-                            });
-                          }
-                          setRangeCompare({
-                            from: new Date(
-                              range.from.getFullYear(),
-                              range.from.getMonth(),
-                              range.from.getDate() - 365
-                            ),
-                            to: range.to
-                              ? new Date(
-                                  range.to.getFullYear() - 1,
-                                  range.to.getMonth(),
-                                  range.to.getDate()
-                                )
-                              : new Date(
-                                  range.from.getFullYear() - 1,
-                                  range.from.getMonth(),
-                                  range.from.getDate()
-                                ),
-                          });
-                        } else {
-                          setRangeCompare(undefined);
-                        }
-                      }}
-                      id="compare-mode"
-                    />
-                    <Label htmlFor="compare-mode">Compare</Label>
-                  </div>
-                )}
-                <div className="flex flex-col gap-2">
-                  <div className="flex gap-2">
-                    <DateInput
-                      value={range.from}
-                      onChange={(date) => {
-                        const toDate =
-                          range.to == null || date > range.to ? date : range.to;
-                        setRange((prevRange) => ({
-                          ...prevRange,
-                          from: date,
-                          to: toDate,
-                        }));
-                      }}
-                    />
-                    <div className="py-1">-</div>
-                    <DateInput
-                      value={range.to}
-                      onChange={(date) => {
-                        const fromDate = date < range.from ? date : range.from;
-                        setRange((prevRange) => ({
-                          ...prevRange,
-                          from: fromDate,
-                          to: date,
-                        }));
-                      }}
-                    />
-                  </div>
-                  {rangeCompare != null && (
-                    <div className="flex gap-2">
-                      <DateInput
-                        value={rangeCompare?.from}
-                        onChange={(date) => {
-                          if (rangeCompare) {
-                            const compareToDate =
-                              rangeCompare.to == null || date > rangeCompare.to
-                                ? date
-                                : rangeCompare.to;
-                            setRangeCompare((prevRangeCompare) => ({
-                              ...prevRangeCompare,
-                              from: date,
-                              to: compareToDate,
-                            }));
-                          } else {
-                            setRangeCompare({
-                              from: date,
-                              to: new Date(),
-                            });
-                          }
-                        }}
-                      />
-                      <div className="py-1">-</div>
-                      <DateInput
-                        value={rangeCompare?.to}
-                        onChange={(date) => {
-                          if (rangeCompare && rangeCompare.from) {
-                            const compareFromDate =
-                              date < rangeCompare.from
-                                ? date
-                                : rangeCompare.from;
-                            setRangeCompare({
-                              ...rangeCompare,
-                              from: compareFromDate,
-                              to: date,
-                            });
-                          }
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-              {isSmallScreen && (
-                <Select
-                  defaultValue={selectedPreset}
-                  onValueChange={(value) => {
-                    setPreset(value);
-                  }}
-                >
-                  <SelectTrigger className="w-[180px] mx-auto mb-2">
-                    <SelectValue placeholder="Select..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PRESETS.map((preset) => (
-                      <SelectItem key={preset.name} value={preset.name}>
-                        {preset.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-              <div>
-                <Calendar
-                  mode="range"
-                  onSelect={(value: { from?: Date; to?: Date } | undefined) => {
-                    if (value?.from != null) {
-                      setRange({ from: value.from, to: value?.to });
-                    }
-                  }}
-                  selected={range}
-                  numberOfMonths={isSmallScreen ? 1 : 2}
-                  defaultMonth={
-                    new Date(
-                      new Date().setMonth(
-                        new Date().getMonth() - (isSmallScreen ? 0 : 1)
-                      )
-                    )
-                  }
-                />
-              </div>
-            </div>
-          </div>
-          {!isSmallScreen && (
-            <div className="flex flex-col items-end gap-1 pr-2 pl-6 pb-6">
-              <div className="flex w-full flex-col items-end gap-1 pr-2 pl-6 pb-6">
-                {PRESETS.map((preset) => (
-                  <PresetButton
-                    key={preset.name}
-                    preset={preset.name}
-                    label={preset.label}
-                    isSelected={selectedPreset === preset.name}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
-        <div className="flex justify-end gap-2 py-2 pr-4">
-          <Button
-            onClick={() => {
-              setIsOpen(false);
-              resetValues();
-            }}
-            variant="ghost"
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              setIsOpen(false);
-              if (
-                !areRangesEqual(range, openedRangeRef.current) ||
-                !areRangesEqual(rangeCompare, openedRangeCompareRef.current)
-              ) {
-                onUpdate?.({ range, rangeCompare });
-              }
-            }}
-          >
-            Update
-          </Button>
+      ) : (
+        <div className="p-4 border border-gray-800 text-slate-800 bg-yellow-600 font-semibold text-2xl">
+          <div className="flex justify-between items-center">
+            ${roomPrice} / Night
+          </div>
         </div>
-      </PopoverContent>
-    </Popover>
+      )}
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Navbar() {
   return (
-    <nav className="max-w-7xl mx-auto py-8 flex justify-between text-xl text-gray-100 backdrop-blur-sm border-b border-gray-800 bg-transparent">
+    <nav className="max-w-7xl mx-auto w-full py-8 flex justify-between text-xl text-gray-100 backdrop-blur-sm border-b border-gray-800 bg-transparent">
       <div className="flex items-center gap-4">
         {/* <img src="" alt="" /> */}
 
