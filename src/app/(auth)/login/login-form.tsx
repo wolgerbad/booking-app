@@ -12,10 +12,7 @@ export default function LoginForm() {
   return (
     <form action={action} className="w-full space-y-6">
       <div className="space-y-2">
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-zinc-900 dark:text-zinc-50"
-        >
+        <label htmlFor="email" className="block text-sm font-medium text-white">
           Email
         </label>
         <input
@@ -23,14 +20,14 @@ export default function LoginForm() {
           name="email"
           type="email"
           required
-          className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-500 transition-colors focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-0 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder-zinc-400 dark:focus:border-zinc-600 dark:focus:ring-zinc-600"
+          className="w-full rounded-lg border border-gray-700 bg-transparent px-4 py-3 text-md text-yellow-600 placeholder-gray-200 transition-colors focus:border-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-0"
           placeholder="Enter your email"
         />
       </div>
       <div className="space-y-2">
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-zinc-900 dark:text-zinc-50"
+          className="block text-sm font-medium text-zinc-900"
         >
           Password
         </label>
@@ -39,7 +36,7 @@ export default function LoginForm() {
           name="password"
           type="password"
           required
-          className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-500 transition-colors focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-0 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder-zinc-400 dark:focus:border-zinc-600 dark:focus:ring-zinc-600"
+          className="w-full rounded-lg border border-gray-700 bg-transparent px-4 py-3 text-md text-yellow-600 placeholder-gray-200 transition-colors focus:border-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-0"
           placeholder="Enter your password"
         />
       </div>
@@ -47,12 +44,12 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-400"
+        className="w-full cursor-pointer rounded-lg bg-yellow-600 px-6 py-4 text-sm font-medium text-gray-800 transition-colors hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 "
       >
         Sign In
       </button>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between text-gray-200">
         <p>Don&apos;t have an account?</p>
         <Link href="/signup" className="underline">
           Sign up

@@ -24,3 +24,14 @@ export async function getBookings(userId: number) {
     .where(eq(booking.user_id, userId))
     .leftJoin(room, eq(room.id, booking.room_id));
 }
+
+export async function getBooking(id: number) {
+  const [selectedBooking] = await db
+    .select()
+    .from(booking)
+    .where(eq(booking.id, id));
+  if (!selectedBooking)
+    return { error: `No reservation found with the given id. (${id})` };
+
+  return selectedBooking;
+}

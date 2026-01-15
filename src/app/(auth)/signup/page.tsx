@@ -8,17 +8,17 @@ export default async function SignupPage() {
   if (!session?.error) redirect('/');
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 py-12 dark:bg-black sm:px-6 lg:px-8">
+    <div className="mt-6 flex items-center justify-center bg-transparent px-4 py-12sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="text-3xl font-bold tracking-tight text-yellow-600">
             Create your account
           </h1>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 text-sm text-gray-400">
             Get started by creating a new account.
           </p>
         </div>
-        <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-gray-700 bg-transparent p-8 shadow-sm">
           <SignupForm />
         </div>
       </div>

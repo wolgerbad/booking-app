@@ -1,8 +1,17 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
+  const pathname = usePathname();
+  console.log('path', pathname);
   return (
-    <nav className="max-w-7xl mx-auto w-full py-8 flex justify-between text-xl text-gray-100 backdrop-blur-sm border-b border-gray-800 bg-transparent">
+    <nav
+      className={`px-32 w-full py-8 flex justify-between text-2xl text-gray-100 bg-transparent ${
+        pathname !== '/' ? 'border-b border-gray-800' : ''
+      }`}
+    >
       <div className="flex items-center gap-4">
         {/* <img src="" alt="" /> */}
 

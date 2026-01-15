@@ -70,7 +70,3 @@ export async function signup(prev: unknown, formData: FormData) {
 export async function logout() {
   (await cookies()).delete('jwt');
 }
-
-export async function whatever() {
-  await db.insert(room).values({});
-}

@@ -133,7 +133,7 @@ export default async function RoomPage({
             </span>
           </div>
         ) : (
-          <ReservationForm room={room} userId={session.id} />
+          <ReservationForm room={room} user={session} />
         )}
       </div>
     </div>

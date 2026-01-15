@@ -4,19 +4,27 @@ import { Button } from '@/components/ui/button';
 import { Room } from '@/db/schema';
 import { bookRoom } from '@/lib/actions';
 import { useBookingStore } from '@/store/booking';
-import { useActionState, useState } from 'react';
+import { useActionState } from 'react';
 
 const initialState = {};
 
+type Session = {
+  id: number;
+  name: string;
+  email: string;
+  hashed_password: null;
+  profile_image: string | null;
+};
+
 export default function ReservationForm({
   room,
-  userId,
+  user,
 }: {
   room: Room;
-  userId: number;
+  user: Session;
 }) {
   const [state, action, pending] = useActionState(bookRoom, initialState);
-
+  console.log('user', user);
   const nights = useBookingStore((state) => state.nights);
   const startDate = useBookingStore((state) => state.startDate);
   const endDate = useBookingStore((state) => state.endDate);
@@ -27,7 +35,7 @@ export default function ReservationForm({
     <div className="text-white font-semibold text-lg bg-slate-800">
       <header className="flex justify-between text-slate-300 bg-slate-600 px-12 py-4">
         <h2>Logged in as</h2>
-        <div>user info</div>
+        <span className="capitalize">{user.name}</span>
       </header>
       <form action={action} className="px-12 py-4 flex flex-col gap-4">
         <div>
@@ -53,11 +61,11 @@ export default function ReservationForm({
           ></textarea>
         </div>
         <input type="hidden" name="room_id" value={room?.id} />
-        <input type="hidden" name="user_id" value={userId} />
+        <input type="hidden" name="user_id" value={user.id} />
         <input type="hidden" name="start_date" value={startDate || ''} />
         <input type="hidden" name="end_date" value={endDate || ''} />
         {nights > 0 ? (
-          <Button className="self-end px-6 py-6 bg-slate-600 hover:bg-slate-700 cursor-pointer">
+          <Button className="self-end bg-yellow-600 hover:bg-yellow-700 rounded-none text-gray-800 font-semibold cursor-pointer p-6">
             Create Reservation
           </Button>
         ) : (

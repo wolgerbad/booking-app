@@ -1,13 +1,36 @@
 import RoomList from '@/components/room-list';
 import { getRooms } from '@/lib/room';
+import RoomFilterPicker from './room-filter-picker';
 
-export default async function RoomsPage() {
+export default async function RoomsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter: string }>;
+}) {
+  const filter = (await searchParams).filter;
+
+  console.log('filter', filter);
   const rooms = await getRooms();
 
+  function filterRooms() {
+    if (!filter) return rooms;
+    if (filter === 'all') return rooms;
+    else if (filter === 'sm')
+      return rooms.filter((room) => room.capacity < 4 && room.capacity > 1);
+    else if (filter === 'md')
+      return rooms.filter((room) => room.capacity < 7 && room.capacity > 3);
+    else if (filter === 'lg')
+      return rooms.filter((room) => room.capacity < 9 && room.capacity > 6);
+  }
+
+  const filteredRooms = filterRooms();
+
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto mt-12 text-gray-300 ">
+    <div className="flex flex-col gap-8 max-w-7xl mx-auto mt-12 text-slate-300 ">
       <div>
-        <h3 className="mb-4 text-yellow-600 text-3xl">Our Luxury Cabins</h3>
+        <h3 className="mb-4 text-yellow-500 text-3xl font-semibold tracking-wide">
+          Our Luxury Cabins
+        </h3>
         <p className="font-medium text-lg">
           Cozy yet luxurious cabins, located right in the heart of the Italian
           Dolomites. Imagine waking up to beautiful mountain views, spending
@@ -18,15 +41,10 @@ export default async function RoomsPage() {
         </p>
       </div>
 
-      <div className="flex self-end border border-gray-800 font-medium">
-        <button className="px-4 py-2 hover:bg-gray-700">All cabins</button>
-        <button className="px-4 py-2 hover:bg-gray-700">2-3 guests</button>
-        <button className="px-4 py-2 hover:bg-gray-700">4-6 guests</button>
-        <button className="px-4 py-2 hover:bg-gray-700">7-8 guests</button>
-      </div>
+      <RoomFilterPicker />
 
       <div>
-        <RoomList rooms={rooms} />
+        <RoomList rooms={filteredRooms} />
       </div>
     </div>
   );

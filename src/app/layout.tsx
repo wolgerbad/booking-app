@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Josefin_Sans } from 'next/font/google';
+
 import './globals.css';
 import Navbar from '@/components/navbar';
 
@@ -11,6 +12,11 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+});
+
+export const josefinSans = Josefin_Sans({
+  subsets: ['latin'],
+  variable: '--font-josefin',
 });
 
 export const metadata: Metadata = {
@@ -26,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-indigo-950 min-h-screen flex flex-col relative`}
+        className={`${josefinSans.variable} antialiased bg-indigo-950 min-h-screen flex flex-col relative`}
       >
         <Navbar />
 

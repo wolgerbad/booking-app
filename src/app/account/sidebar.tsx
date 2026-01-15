@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FaCalendar, FaHome, FaSignOutAlt } from 'react-icons/fa';
+import { logout } from '../(auth)/actions';
 
 export default function Sidebar() {
   return (
@@ -35,15 +36,15 @@ export default function Sidebar() {
           <span>Guest profile</span>
         </Link>
       </div>
-      <Link
-        href="/signout"
+      <button
+        onClick={logout}
         className="flex gap-4 items-center text-xl hover:bg-slate-500/20 px-6 py-3"
       >
         <span>
           <FaSignOutAlt />
         </span>
         <span>Sign out</span>
-      </Link>
+      </button>
     </div>
   );
 }

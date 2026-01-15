@@ -6,7 +6,7 @@ export default function Hero() {
       <h2 className="text-8xl text-gray-200 ">Welcome to paradise.</h2>
       <Link
         href="/rooms"
-        className="px-8 py-4 bg-yellow-600 hover:bg-yellow-700 text-lg font-medium  text-gray-800"
+        className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-lg font-medium  text-gray-800"
       >
         Explore luxury cabins
       </Link>
