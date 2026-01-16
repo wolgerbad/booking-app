@@ -16,6 +16,8 @@ export async function getBookings(userId: number) {
       end_date: booking.end_date,
       status: booking.status,
       additional_note: booking.additional_note,
+      guest: booking.guest,
+      created_at: booking.created_at,
       room_name: room.name,
       image: room.image,
       room_price: room.price,

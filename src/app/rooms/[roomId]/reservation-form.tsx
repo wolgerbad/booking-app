@@ -42,7 +42,10 @@ export default function ReservationForm({
           <label htmlFor="guest" className="block mb-1">
             How many guests?
           </label>
-          <select className="w-full bg-slate-300 text-slate-900 px-4 py-2">
+          <select
+            name="guest"
+            className="w-full bg-slate-300 text-slate-900 px-4 py-2"
+          >
             {Array.from({ length: room.capacity }).map((_, idx) => (
               <option key={idx + 1}>{idx + 1}</option>
             ))}
@@ -65,8 +68,12 @@ export default function ReservationForm({
         <input type="hidden" name="start_date" value={startDate || ''} />
         <input type="hidden" name="end_date" value={endDate || ''} />
         {nights > 0 ? (
-          <Button className="self-end bg-yellow-600 hover:bg-yellow-700 rounded-none text-gray-800 font-semibold cursor-pointer p-6">
-            Create Reservation
+          <Button
+            className={`${
+              pending ? 'cursor-not-allowed' : 'cursor-pointer'
+            } self-end rounded-none text-gray-800 font-semibold bg-yellow-600 hover:bg-yellow-700  p-6`}
+          >
+            {pending ? 'Creating..' : 'Create Reservation'}
           </Button>
         ) : (
           <span className="self-end text-slate-500 font-medium">

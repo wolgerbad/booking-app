@@ -3,6 +3,8 @@
 import React, { type FC, useState, useEffect, useMemo, JSX } from 'react';
 import { Calendar } from './ui/calendar';
 import { differenceInDays } from 'date-fns';
+import { Button } from './ui/button';
+import { useBookingStore } from '@/store/booking';
 
 export interface DateRangePickerProps {
   /** Click handler for applying the updates from DateRangePicker. */
@@ -57,6 +59,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
     from: initialFromDate,
     to: initialToDate,
   });
+  const setNights = useBookingStore((state) => state.setNights);
 
   const [isSmallScreen, setIsSmallScreen] = useState(
     typeof window !== 'undefined' ? window.innerWidth < 960 : false
@@ -82,12 +85,28 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
         // Disable dates before the selected start date
         // and dates more than 3 days after the start date (max 4 days = 3 nights)
         console.log('range.from', range.from);
+
         const daysDifference = differenceInDays(date, range.from);
-        return daysDifference < 0 || daysDifference > 3;
+        if (daysDifference < 0 || daysDifference > 3) {
+          return true;
+        }
+
+        // Check if any booked dates fall within the range
+        const rangeStart = range.from;
+        const rangeEnd = date;
+        const hasBookedDatesInRange = bookedDates.some((booked) => {
+          return (
+            (booked.from >= rangeStart && booked.from <= rangeEnd) ||
+            (booked.to >= rangeStart && booked.to <= rangeEnd) ||
+            (booked.from <= rangeStart && booked.to >= rangeEnd)
+          );
+        });
+
+        return hasBookedDatesInRange;
       }
       return false;
     };
-  }, [range.from]);
+  }, [range.from, bookedDates]);
 
   // Calculate nights and total price
   const nights = useMemo(() => {
@@ -134,25 +153,50 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
       />
 
       {/* Display price calculation */}
-      {roomPrice && range.from && range.to && nights > 0 ? (
+      {roomPrice && range.from ? (
         <div className="p-4 border border-gray-800 bg-yellow-600 text-slate-800 font-semibold text-xl">
           <div className="flex justify-between items-center">
-            <span className="">
-              $
-              {typeof roomPrice === 'string'
-                ? parseFloat(roomPrice)
-                : roomPrice}{' '}
-              × {nights} night{nights !== 1 ? 's' : ''}
-            </span>
-            <span className="text-slate-800 text-2xl">
-              ${totalPrice.toFixed(2)}
-            </span>
+            <div className="flex items-center gap-6">
+              <span className="text-2xl">
+                $
+                {typeof roomPrice === 'string'
+                  ? parseFloat(roomPrice)
+                  : roomPrice}{' '}
+                <span className="text-xl font-normal">/ night </span>
+              </span>
+              {range.to && nights > 0 && (
+                <span className="bg-yellow-900/40 px-4 py-3">x{nights}</span>
+              )}
+              {range.to && nights > 0 && (
+                <span className="text-slate-800 text-2xl">
+                  ${totalPrice.toFixed(2)}
+                </span>
+              )}
+            </div>
+            <Button
+              onClick={() => {
+                setRange({
+                  from: undefined,
+                  to: undefined,
+                });
+                setNights(0);
+              }}
+              className="p-5 bg-transparent border border-slate-800 text-slate-800 font-semibold hover:bg-transparent cursor-pointer rounded-none"
+            >
+              Clear
+            </Button>
           </div>
         </div>
       ) : (
         <div className="p-4 border border-gray-800 text-slate-800 bg-yellow-600 font-semibold text-2xl">
           <div className="flex justify-between items-center">
-            ${roomPrice} / Night
+            <span className="text-2xl">
+              $
+              {typeof roomPrice === 'string'
+                ? parseFloat(roomPrice)
+                : roomPrice}{' '}
+              <span className="text-xl font-normal">/ night </span>
+            </span>
           </div>
         </div>
       )}

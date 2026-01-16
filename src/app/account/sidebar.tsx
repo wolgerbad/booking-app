@@ -1,16 +1,21 @@
-'useclient';
+'use client';
 
 import Link from 'next/link';
 import { FaCalendar, FaHome, FaSignOutAlt } from 'react-icons/fa';
 import { logout } from '../(auth)/actions';
+import { usePathname } from 'next/navigation';
 
 export default function Sidebar() {
+  const pathname = usePathname();
+  console.log('pathname', pathname);
   return (
     <div className="flex flex-col justify-between h-full text-slate-400 border-r border-gray-800 font-semibold">
       <div className="flex flex-col gap-4">
         <Link
           href="/account"
-          className="flex gap-4 items-center text-xl px-6 py-3 hover:bg-slate-500/20"
+          className={`${
+            pathname === '/account' ? 'bg-slate-500/20' : ''
+          } flex gap-4 items-center text-xl px-6 py-3 hover:bg-slate-500/20`}
         >
           <span>
             <FaHome />
@@ -19,7 +24,9 @@ export default function Sidebar() {
         </Link>
         <Link
           href="/account/reservations"
-          className="flex gap-4 items-center text-xl hover:bg-slate-500/20 px-6 py-3"
+          className={`${
+            pathname === '/account/reservations' ? 'bg-slate-500/20' : ''
+          } flex gap-4 items-center text-xl px-6 py-3 hover:bg-slate-500/20`}
         >
           <span>
             <FaCalendar />
@@ -28,7 +35,9 @@ export default function Sidebar() {
         </Link>
         <Link
           href="/account/profile"
-          className="flex gap-4 items-center text-xl hover:bg-slate-500/20 px-6 py-3"
+          className={`${
+            pathname === '/account/profile' ? 'bg-slate-500/20' : ''
+          } flex gap-4 items-center text-xl px-6 py-3 hover:bg-slate-500/20`}
         >
           <span>
             <FaHome />

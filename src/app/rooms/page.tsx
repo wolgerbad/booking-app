@@ -28,11 +28,11 @@ export default async function RoomsPage({
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto mt-12 text-slate-300 ">
       <div>
-        <h3 className="mb-4 text-yellow-500 text-3xl font-semibold tracking-wide">
-          Our Luxury Cabins
+        <h3 className="mb-4 text-yellow-600 text-3xl font-semibold tracking-wide">
+          Our Luxury Rooms
         </h3>
         <p className="font-medium text-lg">
-          Cozy yet luxurious cabins, located right in the heart of the Italian
+          Cozy yet luxurious rooms, located right in the heart of the Italian
           Dolomites. Imagine waking up to beautiful mountain views, spending
           your days exploring the dark forests around, or just relaxing in your
           private hot tub under the stars. Enjoy nature&apos;s beauty in your

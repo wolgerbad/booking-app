@@ -5,6 +5,7 @@ import {
   FaCar,
   FaUtensils,
   FaHotTub,
+  FaEyeSlash,
 } from 'react-icons/fa';
 import { FaArrowLeft } from 'react-icons/fa6';
 import Link from 'next/link';
@@ -44,7 +45,7 @@ export default async function RoomPage({
         className="inline-flex items-center gap-2 text-gray-300 hover:text-yellow-600 transition-colors mb-8"
       >
         <FaArrowLeft />
-        <span>Back to all cabins</span>
+        <span>Back to all rooms</span>
       </Link>
 
       {/* Hero Image Section */}
@@ -75,10 +76,10 @@ export default async function RoomPage({
               <span>${room.price} / Night</span>
             </div>
           </div>
-          <div className="flex-1 border border-gray-800  p-6">
-            <div className="">
+          <div className="flex-1 flex flex-col border border-gray-800  p-6">
+            <div className="flex-1">
               <h2 className="text-yellow-600 text-2xl font-semibold mb-4">
-                About this cabin
+                About this room
               </h2>
               <p className="text-gray-300 leading-relaxed text-lg">
                 {room.description}
@@ -91,26 +92,19 @@ export default async function RoomPage({
                 with nature.
               </p>
             </div>
-            <div className="mt-4">
-              <h2 className="text-yellow-600 text-2xl font-semibold mb-6">
-                Amenities
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-6">
+            <div className="">
+              <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-3 text-gray-300">
-                  <FaWifi className="text-yellow-600 text-xl" />
-                  <span>Free WiFi</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <FaHotTub className="text-yellow-600 text-xl" />
+                  <FaHotTub className="text-slate-600 text-xl" />
                   <span>Private Hot Tub</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
-                  <FaCar className="text-yellow-600 text-xl" />
-                  <span>Free Parking</span>
+                  <FaUtensils className="text-slate-600 text-xl" />
+                  <span>Full Kitchen</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
-                  <FaUtensils className="text-yellow-600 text-xl" />
-                  <span>Full Kitchen</span>
+                  <FaEyeSlash className="text-slate-600 text-xl" />
+                  <span>Privacy 100%</span>
                 </div>
               </div>
             </div>
@@ -120,7 +114,10 @@ export default async function RoomPage({
 
       <div className="grid grid-cols-2 mt-12">
         <div>
-          <DateContainer bookedDates={alteredBookedDates} />
+          <DateContainer
+            bookedDates={alteredBookedDates}
+            roomPrice={room.price}
+          />
         </div>
         {session?.error ? (
           <div className="flex justify-center items-center bg-slate-700 text-white font-semibold text-xl">

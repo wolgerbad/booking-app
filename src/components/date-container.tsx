@@ -6,8 +6,10 @@ import { useBookingStore } from '@/store/booking';
 
 export default function DateContainer({
   bookedDates,
+  roomPrice,
 }: {
   bookedDates: { from: Date; to: Date }[];
+  roomPrice: string;
 }) {
   const nights = useBookingStore((state) => state.nights);
   const setNights = useBookingStore((state) => state.setNights);
@@ -32,7 +34,7 @@ export default function DateContainer({
           setEndDate(format(to, 'yyyy-MM-dd'));
         }
       }}
-      roomPrice={500}
+      roomPrice={+roomPrice}
     />
   );
 }

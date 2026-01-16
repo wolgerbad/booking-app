@@ -17,6 +17,7 @@ export const user = mysqlTable('user', {
   email: varchar('email', { length: 100 }).notNull(),
   hashed_password: varchar('hashed_password', { length: 255 }).notNull(),
   profile_image: text('profile_image'),
+  national_id: varchar('national_id', { length: 48 }),
 });
 
 export const room = mysqlTable('room', {
@@ -43,8 +44,11 @@ export const booking = mysqlTable(
       .references(() => room.id),
     start_date: date('start_date', { mode: 'string' }).notNull(),
     end_date: date('end_date', { mode: 'string' }).notNull(),
-    status: varchar('status', { length: 20 }).default('confirmed'),
+    status: varchar('status', { length: 20 }).default('upcoming'),
+    guest: int('guest').notNull(),
     additional_note: text('additional_note'),
+    created_at: timestamp('created_at', { mode: 'string' }).defaultNow(),
+    updated_at: timestamp('updated_at', { mode: 'string' }).defaultNow(),
   },
   (table) => [check('date_check', sql`${table.end_date} > ${table.start_date}`)]
 );

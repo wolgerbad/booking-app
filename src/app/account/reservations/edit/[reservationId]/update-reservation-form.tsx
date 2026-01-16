@@ -2,29 +2,34 @@
 
 import { Button } from '@/components/ui/button';
 import { Room } from '@/db/schema';
-import { useRouter } from 'next/navigation';
-
+import { updateBooking } from '@/lib/actions';
+import { usePathname } from 'next/navigation';
+import { useActionState } from 'react';
+const initialState = {};
 export default function UpdateReservationForm({ room }: { room: Room }) {
-  const router = useRouter();
+  const [state, action, pending] = useActionState(updateBooking, initialState);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    router.push('/account/reservations');
-  }
+  const pathname = usePathname();
+  const splittedPathname = pathname.split('/');
+  const bookingId = splittedPathname[4];
 
   return (
     <div className="text-white font-semibold text-lg bg-slate-800">
-      <form className="px-12 py-6 flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form className="px-12 py-6 flex flex-col gap-4" action={action}>
         <div>
           <label htmlFor="guest" className="block mb-1">
             How many guests?
           </label>
-          <select className="w-full bg-slate-300 text-slate-900 px-4 py-2">
+          <select
+            name="guest"
+            className="w-full bg-slate-300 text-slate-900 px-4 py-2"
+          >
             {Array.from({ length: room.capacity }).map((_, idx) => (
               <option key={idx + 1}>{idx + 1}</option>
             ))}
           </select>
         </div>
+        <input type="hidden" name="bookingId" value={bookingId} />
         <div>
           <label htmlFor="note" className="block mb-1">
             Anything we should know about your stay?
@@ -40,9 +45,14 @@ export default function UpdateReservationForm({ room }: { room: Room }) {
 
         <Button
           type="submit"
-          className="self-end p-7 bg-yellow-600 hover:bg-yellow-700 rounded-none text-gray-700 font-semibold text-lg cursor-pointer"
+          disabled={pending}
+          className={`${
+            pending
+              ? 'cursor-not-allowed bg-yellow-800'
+              : 'bg-yellow-600 hover:bg-yellow-700 cursor-pointer'
+          } self-end p-7  rounded-none text-gray-700 font-semibold text-lg `}
         >
-          Update Reservation
+          {pending ? 'Updating..' : 'Update Reservation'}
         </Button>
       </form>
     </div>

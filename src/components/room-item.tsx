@@ -21,7 +21,7 @@ export default function RoomItem({ room }: PropTypes) {
         />
       </div>
       <div className="col-start-2 col-span-full flex flex-col border border-gray-800">
-        <div className="flex flex-col gap-6 p-6 flex-1">
+        <div className="flex flex-col gap-5 p-6 flex-1">
           <h3 className="text-yellow-600 text-2xl font-semibold tracking-wide ">
             {room.name}
           </h3>
@@ -32,7 +32,7 @@ export default function RoomItem({ room }: PropTypes) {
             <p className="text-lg">For up to {room.capacity} guests</p>
           </div>
           <span className="self-end">
-            <span className="text-2xl">${room.price} / </span>
+            <span className="text-2xl tracking-wide">${room.price} / </span>
             <span>night</span>
           </span>
         </div>

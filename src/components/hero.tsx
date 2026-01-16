@@ -8,7 +8,7 @@ export default function Hero() {
         href="/rooms"
         className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-lg font-medium  text-gray-800"
       >
-        Explore luxury cabins
+        Explore luxury rooms
       </Link>
     </div>
   );

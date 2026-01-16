@@ -10,6 +10,8 @@ export type Reservation = {
   end_date: string;
   image: string;
   room_price: string;
+  guest: number;
+  created_at: string;
 };
 export default function ReservationList({
   reservations,
