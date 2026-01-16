@@ -24,10 +24,12 @@ export async function getBookings(userId: number) {
     })
     .from(booking)
     .where(eq(booking.user_id, userId))
-    .leftJoin(room, eq(room.id, booking.room_id));
+    .innerJoin(room, eq(room.id, booking.room_id));
 }
 
-export async function getBooking(id: number) {
+export async function getBooking(
+  id: number
+): Promise<{ error: string } | typeof booking.$inferSelect> {
   const [selectedBooking] = await db
     .select()
     .from(booking)

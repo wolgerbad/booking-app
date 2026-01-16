@@ -8,10 +8,12 @@ export default function ProfileForm({
   user,
 }: {
   user: {
+    hashed_password: null;
     id: number;
     name: string;
     email: string;
-    national_id: string;
+    profile_image: string | null;
+    national_id: string | null;
   };
 }) {
   return (
@@ -50,7 +52,7 @@ export default function ProfileForm({
         <input
           type="number"
           name="id"
-          defaultValue={user.national_id}
+          defaultValue={user.national_id ?? ''}
           className=" w-full px-4 py-3 bg-slate-300 text-slate-700"
         />
       </div>

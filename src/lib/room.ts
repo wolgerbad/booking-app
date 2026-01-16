@@ -1,8 +1,8 @@
 import { db } from '@/db';
-import { room } from '@/db/schema';
+import { Room, room } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
-export async function getRooms() {
+export async function getRooms(): Promise<{ error: string } | Room[]> {
   const rooms = await db.select().from(room);
   if (!rooms.length) return { error: 'No room found.' };
   return rooms;

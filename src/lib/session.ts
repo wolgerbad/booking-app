@@ -41,15 +41,25 @@ export async function setSession(payload: JwtPayload) {
   });
 }
 
+type SessionData = {
+  payload: {
+    userId: number;
+    iat: number;
+    exp: number;
+  };
+  protectedHeader: {
+    alg: string;
+  };
+};
+
 export async function getSession() {
   const token = (await cookies()).get('jwt')?.value;
-  if (!token) return { error: 'No cookie found' };
+  if (!token) return null;
 
-  const session = await jwtVerify(token, secret);
-  if (!session) return { error: 'Not verified.' };
+  return (await jwtVerify(token, secret)) as SessionData;
+}
 
-  const userId = session.payload.userId;
-
+export async function getUser(userId: number) {
   const [authenticatedUser] = await db
     .select()
     .from(user)

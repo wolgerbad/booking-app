@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const pathname = usePathname();
-  console.log('path', pathname);
+
   return (
     <nav
       className={`px-32 w-full py-8 flex justify-between text-2xl text-gray-100 bg-transparent ${
@@ -15,7 +15,7 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         {/* <img src="" alt="" /> */}
 
-        <Link href="/">App name</Link>
+        <Link href="/">The Aurora</Link>
       </div>
       <div className="flex items-center gap-12">
         <Link href="/rooms" className="hover:text-yellow-500">

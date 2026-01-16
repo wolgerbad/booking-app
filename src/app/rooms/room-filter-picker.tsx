@@ -1,11 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export default function RoomFilterPicker() {
-  const pathname = usePathname();
-
   const searchParams = useSearchParams();
   const filter = searchParams.get('filter');
 

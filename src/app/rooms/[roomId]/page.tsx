@@ -1,22 +1,23 @@
 import Image from 'next/image';
-import {
-  FaHouseUser,
-  FaWifi,
-  FaCar,
-  FaUtensils,
-  FaHotTub,
-  FaEyeSlash,
-} from 'react-icons/fa';
+import { FaHouseUser, FaUtensils, FaHotTub, FaEyeSlash } from 'react-icons/fa';
 import { FaArrowLeft } from 'react-icons/fa6';
 import Link from 'next/link';
 import { getRoom } from '@/lib/room';
-import { DateRangePicker } from '@/components/date-range-picker';
-import { getSession } from '@/lib/session';
+
+import { getSession, getUser } from '@/lib/session';
 import DateContainer from '@/components/date-container';
-import { Button } from '@/components/ui/button';
+
 import ReservationForm from './reservation-form';
 import { startOfDay } from 'date-fns';
 import { getBookedDates } from '@/lib/booking';
+import { room } from '@/db/schema';
+import { db } from '@/db';
+
+export async function generateStaticParams() {
+  const rooms = await db.select({ roomId: room.id }).from(room);
+
+  return rooms.map((room) => String(room.roomId));
+}
 
 export default async function RoomPage({
   params,
@@ -30,6 +31,8 @@ export default async function RoomPage({
   }));
 
   const session = await getSession();
+
+  const user = await getUser(session.payload.userId);
 
   const roomId = (await params).roomId;
 
@@ -119,7 +122,7 @@ export default async function RoomPage({
             roomPrice={room.price}
           />
         </div>
-        {session?.error ? (
+        {!session ? (
           <div className="flex justify-center items-center bg-slate-700 text-white font-semibold text-xl">
             <span>
               You must{' '}
@@ -130,7 +133,7 @@ export default async function RoomPage({
             </span>
           </div>
         ) : (
-          <ReservationForm room={room} user={session} />
+          <ReservationForm room={room} user={user} />
         )}
       </div>
     </div>

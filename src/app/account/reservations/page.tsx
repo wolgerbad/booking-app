@@ -5,12 +5,16 @@ import { FaArrowRightLong } from 'react-icons/fa6';
 import ReservationList from './reservation-list';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Aurora - Reservations',
+};
+
 export default async function Page() {
   const session = await getSession();
 
-  if (session?.error) redirect('/login');
+  if (!session) redirect('/login');
 
-  const reservations = await getBookings(session.id);
+  const reservations = await getBookings(session.payload.userId);
 
   console.log('reservations', reservations);
   return (

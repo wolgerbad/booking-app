@@ -2,6 +2,12 @@ import RoomList from '@/components/room-list';
 import { getRooms } from '@/lib/room';
 import RoomFilterPicker from './room-filter-picker';
 
+export const metadata = {
+  title: 'Aurora - Luxury Rooms',
+  description:
+    "Cozy yet luxurious rooms, located right in the heart of the Italian Dolomites. Imagine waking up to beautiful mountain views, spending your days exploring the dark forests around, or just relaxing in your private hot tub under the stars. Enjoy nature's beauty in your own little home away from home. The perfect spot for a peaceful, calm vacation. Welcome to paradise.",
+};
+
 export default async function RoomsPage({
   searchParams,
 }: {
@@ -9,10 +15,13 @@ export default async function RoomsPage({
 }) {
   const filter = (await searchParams).filter;
 
-  console.log('filter', filter);
   const rooms = await getRooms();
+  if ('error' in rooms)
+    return (
+      <div className="text-red-500 font-semibold text-3xl">{rooms.error}</div>
+    );
 
-  function filterRooms() {
+  const filterRooms = () => {
     if (!filter) return rooms;
     if (filter === 'all') return rooms;
     else if (filter === 'sm')
@@ -21,7 +30,9 @@ export default async function RoomsPage({
       return rooms.filter((room) => room.capacity < 7 && room.capacity > 3);
     else if (filter === 'lg')
       return rooms.filter((room) => room.capacity < 9 && room.capacity > 6);
-  }
+
+    return rooms;
+  };
 
   const filteredRooms = filterRooms();
 

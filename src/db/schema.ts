@@ -47,8 +47,12 @@ export const booking = mysqlTable(
     status: varchar('status', { length: 20 }).default('upcoming'),
     guest: int('guest').notNull(),
     additional_note: text('additional_note'),
-    created_at: timestamp('created_at', { mode: 'string' }).defaultNow(),
-    updated_at: timestamp('updated_at', { mode: 'string' }).defaultNow(),
+    created_at: timestamp('created_at', { mode: 'string' })
+      .notNull()
+      .defaultNow(),
+    updated_at: timestamp('updated_at', { mode: 'string' })
+      .notNull()
+      .defaultNow(),
   },
   (table) => [check('date_check', sql`${table.end_date} > ${table.start_date}`)]
 );

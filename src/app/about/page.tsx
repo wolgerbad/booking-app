@@ -1,13 +1,14 @@
 import Image from 'next/image';
+import Link from 'next/link';
+
+export const metadata = {
+  title: 'Aurora - About Us',
+};
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
-      {/* Hero Section */}
-
-      {/* Main Content Section */}
       <div className="max-w-6xl mx-auto space-y-24">
-        {/* Image and Text Section 1 */}
         <section className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
             <div className="relative aspect-square">
@@ -36,7 +37,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Image and Text Section 2 */}
         <section className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-200">
@@ -78,7 +78,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
         <section className="text-center py-12 border-t border-gray-700">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-200 mb-6">
             Ready to Experience Paradise?
@@ -87,12 +86,12 @@ export default function AboutPage() {
             Join us and discover the perfect blend of luxury, comfort, and
             natural beauty.
           </p>
-          <a
+          <Link
             href="/rooms"
             className="inline-block px-8 py-4 bg-yellow-600 hover:bg-yellow-700 text-lg font-medium text-gray-800 transition-colors"
           >
             Explore Our Rooms
-          </a>
+          </Link>
         </section>
       </div>
     </div>

@@ -1,17 +1,16 @@
-import { Booking, Room } from '@/db/schema';
 import ReservationItem from './reservation-item';
 
 export type Reservation = {
   id: number;
-  room_name: string;
-  additional_note?: string;
-  status: string;
   start_date: string;
   end_date: string;
-  image: string;
-  room_price: string;
+  status: string | null;
+  additional_note: string | null;
   guest: number;
   created_at: string;
+  room_name: string;
+  image: string;
+  room_price: string;
 };
 export default function ReservationList({
   reservations,

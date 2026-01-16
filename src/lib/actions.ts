@@ -18,7 +18,7 @@ const formSchema = z.object({
 });
 
 export async function bookRoom(prev: unknown, formData: FormData) {
-  const additional_note = formData.get('additional_note');
+  const additional_note = formData.get('additional_note') as string;
   const user_id = formData.get('user_id') as string;
   const room_id = formData.get('room_id') as string;
   const start_date = formData.get('start_date') as string;
@@ -39,7 +39,7 @@ export async function bookRoom(prev: unknown, formData: FormData) {
   if (result.error) return { error: result.error.message };
   console.log('error', result.error);
 
-  const newBooking = await db.insert(booking).values({
+  await db.insert(booking).values({
     additional_note,
     start_date,
     room_id: data.room_id,
@@ -51,7 +51,7 @@ export async function bookRoom(prev: unknown, formData: FormData) {
   redirect('/rooms/success');
 }
 
-export async function updateBooking(prev: unknown, formData: FormData) {
+export async function updateBooking(formData: FormData) {
   const guest = formData.get('guest') as string;
   const bookingId = formData.get('bookingId') as string;
 

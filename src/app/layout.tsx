@@ -4,16 +4,6 @@ import { Geist, Geist_Mono, Josefin_Sans } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/navbar';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
 export const josefinSans = Josefin_Sans({
   subsets: ['latin'],
   variable: '--font-josefin',

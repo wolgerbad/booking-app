@@ -3,6 +3,16 @@ import UpdateReservationForm from './update-reservation-form';
 import { getBooking } from '@/lib/booking';
 import Link from 'next/link';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ reservationId: string }>;
+}) {
+  return {
+    title: `Aurora - Update #${(await params).reservationId}`,
+  };
+}
+
 export default async function Page({
   params,
 }: {
@@ -12,7 +22,7 @@ export default async function Page({
 
   const booking = await getBooking(+reservationId);
 
-  if (booking?.error)
+  if ('error' in booking)
     return (
       <div className="flex flex-col items-center gap-4">
         <h2 className="text-center text-slate-200 font-medium text-lg">

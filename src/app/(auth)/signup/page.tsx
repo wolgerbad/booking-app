@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 export default async function SignupPage() {
   const session = await getSession();
 
-  if (!session?.error) redirect('/');
+  if (session) redirect('/');
 
   return (
     <div className="mt-6 flex items-center justify-center bg-transparent px-4 py-12sm:px-6 lg:px-8">

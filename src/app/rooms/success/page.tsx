@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { FaArrowRightLong } from 'react-icons/fa6';
 
+export const metadata = {
+  title: 'Aurora - Reservation Successfull',
+};
+
 export default function Page() {
   return (
     <div className="flex items-center flex-col gap-4 mt-12">

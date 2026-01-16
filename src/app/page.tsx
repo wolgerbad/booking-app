@@ -1,7 +1,11 @@
 import Hero from '@/components/hero';
-import { getBookedDates } from '@/lib/booking';
-import { startOfDay } from 'date-fns';
+
 import Image from 'next/image';
+
+export const metadata = {
+  title: 'Aurora - Welcome to paradise',
+  description: 'Aurora is a booking application for luxury rooms.',
+};
 
 export default async function Home() {
   return (
