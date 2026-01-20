@@ -25,7 +25,7 @@ export default function ReservationItem({
 
   return (
     <div className="flex border border-gray-800">
-      <div className="border-r border-gray-800 h-full">
+      <div className="hidden lg:block border-r border-gray-800 h-full">
         <Image
           src={reservation.image}
           width={100}
@@ -37,11 +37,11 @@ export default function ReservationItem({
       <div className="flex-1 flex flex-col px-4 py-2">
         <div className="flex-1">
           <div className="flex justify-between text-white">
-            <h2 className="text-lg font-semibold">
+            <h2 className="text-base sm:text-lg font-semibold">
               {totalNights} nights in {reservation.room_name}
             </h2>
             <span
-              className={`${
+              className={`hidden lg:block ${
                 reservation.status === 'upcoming'
                   ? 'bg-green-600 text-green-200'
                   : reservation.status === 'pending'
@@ -52,20 +52,20 @@ export default function ReservationItem({
               {reservation.status}
             </span>
           </div>
-          <div className="font-semibold text-slate-400 text-md">
+          <div className="font-semibold text-slate-400 text-sm sm:text-base ">
             <span>{formattedStartDate} - </span>
             <span>{formattedEndDate}</span>
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4 text-lg">
-            <span className="text-yellow-500 text-lg font-semibold">
+          <div className="flex items-center gap-4 text-base sm:text-lg">
+            <span className="text-yellow-500 font-semibold">
               ${totalPrice}
             </span>
             <span className="text-slate-400">•</span>
-            <span className="text-slate-400">{reservation.guest} guest</span>
+            <span className="text-slate-400 ">{reservation.guest} guest</span>
           </div>
-          <span className="text-slate-500 text-sm font-semibold">
+          <span className="text-slate-500 text-sm font-semibold hidden lg:block">
             {createdAt}
           </span>
         </div>
@@ -77,7 +77,7 @@ export default function ReservationItem({
         >
           Edit
         </Link>
-        <form action={deleteBooking}>
+        <form action={deleteBooking} className='flex-1'>
           <input type="hidden" value={reservation.id} name="bookingId" />
           <DeleteButton />
         </form>
@@ -95,7 +95,7 @@ function DeleteButton() {
         pending
           ? 'bg-yellow-800 cursor-not-allowed'
           : 'hover:bg-yellow-600 cursor-pointer'
-      }  flex-1 px-8 py-4 text-slate-500 font-semibold  border-l border-gray-800`}
+      }  h-full px-8 py-4 text-slate-500 font-semibold  border-l border-gray-800`}
     >
       {pending ? 'Deleting...' : 'Delete'}
     </button>

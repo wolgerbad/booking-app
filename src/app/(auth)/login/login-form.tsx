@@ -27,7 +27,7 @@ export default function LoginForm() {
       <div className="space-y-2">
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-zinc-900"
+          className="block text-sm font-medium text-white"
         >
           Password
         </label>

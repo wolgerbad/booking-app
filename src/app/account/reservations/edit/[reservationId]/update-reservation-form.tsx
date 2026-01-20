@@ -58,7 +58,7 @@ function UpdateButton() {
         pending
           ? 'cursor-not-allowed bg-yellow-800'
           : 'bg-yellow-600 hover:bg-yellow-700 cursor-pointer'
-      } self-end p-7  rounded-none text-gray-700 font-semibold text-lg `}
+      }  sm:self-end p-7  rounded-none text-gray-700 font-semibold text-lg `}
     >
       {pending ? 'Updating..' : 'Update Reservation'}
     </Button>

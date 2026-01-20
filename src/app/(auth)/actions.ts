@@ -5,6 +5,7 @@ import { room, user } from '@/db/schema';
 import { comparePasswords, hashPassword, setSession } from '@/lib/session';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import z from 'zod';
 
 const signupSchema = z.object({
@@ -69,4 +70,5 @@ export async function signup(prev: unknown, formData: FormData) {
 
 export async function logout() {
   (await cookies()).delete('jwt');
+  redirect('/login')
 }

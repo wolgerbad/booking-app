@@ -157,18 +157,18 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
         <div className="p-4 border border-gray-800 bg-yellow-600 text-slate-800 font-semibold text-xl">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-6">
-              <span className="text-2xl">
+              <span className=" sm:text-2xl">
                 $
                 {typeof roomPrice === 'string'
                   ? parseFloat(roomPrice)
                   : roomPrice}{' '}
-                <span className="text-xl font-normal">/ night </span>
+                <span className="hidden sm:inline-block text-xl font-normal">/ night </span>
               </span>
               {range.to && nights > 0 && (
-                <span className="bg-yellow-900/40 px-4 py-3">x{nights}</span>
+                <span className="bg-yellow-900/40 px-2 sm:px-4 py-1 sm:py-3">x{nights}</span>
               )}
               {range.to && nights > 0 && (
-                <span className="text-slate-800 text-2xl">
+                <span className="text-slate-800 mr-4">
                   ${totalPrice.toFixed(2)}
                 </span>
               )}

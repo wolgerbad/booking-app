@@ -37,7 +37,7 @@ export default async function RoomsPage({
   const filteredRooms = filterRooms();
 
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto mt-12 text-slate-300 ">
+    <div className="flex flex-col gap-8 max-w-7xl mx-auto mt-12 text-slate-300 px-6 sm:px-4 md:px-2 lg:p-0">
       <div>
         <h3 className="mb-4 text-yellow-600 text-3xl font-semibold tracking-wide">
           Our Luxury Rooms

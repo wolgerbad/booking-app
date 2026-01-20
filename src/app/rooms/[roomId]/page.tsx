@@ -13,10 +13,23 @@ import { getBookedDates } from '@/lib/booking';
 import { room } from '@/db/schema';
 import { db } from '@/db';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ roomId: string }>;
+}) {
+  const roomId = (await params).roomId;
+  const room = await getRoom(+roomId);
+
+  return {
+    title: `Aurora - ${room.name}`,
+  };
+}
+
 export async function generateStaticParams() {
   const rooms = await db.select({ roomId: room.id }).from(room);
 
-  return rooms.map((room) => String(room.roomId));
+  return rooms.map((room) => ({ roomId: String(room.roomId) }));
 }
 
 export default async function RoomPage({
@@ -32,7 +45,7 @@ export default async function RoomPage({
 
   const session = await getSession();
 
-  const user = await getUser(session.payload.userId);
+  const user = session ? await getUser(session.payload.userId) :  null;
 
   const roomId = (await params).roomId;
 
@@ -53,7 +66,7 @@ export default async function RoomPage({
 
       {/* Hero Image Section */}
 
-      <div className="grid grid-cols-3">
+      <div className="grid md:grid-cols-3">
         <div className="border border-gray-800 col-start-1 col-span-1">
           <div className="relative w-full h-[500px] sm:h-[600px]">
             <Image
@@ -115,7 +128,7 @@ export default async function RoomPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 mt-12">
+      <div className="grid lg:grid-cols-2 gap-4 lg:gap-0 mt-12">
         <div>
           <DateContainer
             bookedDates={alteredBookedDates}

@@ -10,14 +10,14 @@ type PropTypes = {
 
 export default function RoomItem({ room }: PropTypes) {
   return (
-    <div className="grid grid-cols-3">
+    <div className="grid md:grid-cols-3">
       <div className="col-start-1 col-span-1 border-l border-t border-b border-gray-800">
         <Image
           src={room.image}
           alt={room.name}
           width={500}
           height={500}
-          className="h-full object-cover"
+          className="max-h-40 md:h-full object-cover"
         />
       </div>
       <div className="col-start-2 col-span-full flex flex-col border border-gray-800">

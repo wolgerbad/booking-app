@@ -7,7 +7,7 @@ type PropTypes = {
 
 export default function RoomList({ rooms }: PropTypes) {
   return (
-    <div className="grid grid-cols-2 gap-16 mb-8">
+    <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 mb-8">
       {rooms.map((room) => (
         <RoomItem key={room.id} room={room} />
       ))}
