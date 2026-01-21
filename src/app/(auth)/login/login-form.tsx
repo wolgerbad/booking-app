@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { useActionState } from 'react';
 import { login } from '../actions';
 
-const initialState = {};
+const initialState = {
+  error: null
+};
 
 export default function LoginForm() {
   const [state, action, pending] = useActionState(login, initialState);

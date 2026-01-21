@@ -43,6 +43,8 @@ export async function login(prev: unknown, formData: FormData) {
   }
 
   await setSession({ userId: userExists.id });
+
+  return {error: null}
 }
 
 export async function signup(prev: unknown, formData: FormData) {
@@ -66,6 +68,8 @@ export async function signup(prev: unknown, formData: FormData) {
   if (!newUser) return { error: 'Something went wrong' };
 
   await setSession({ userId: newUser.id });
+
+  return {error: null}
 }
 
 export async function logout() {

@@ -5,7 +5,7 @@ import { useActionState } from 'react';
 import { signup } from '../actions';
 
 const initialState = {
-  error: '',
+  error: null,
 };
 
 export default function SignupForm() {
