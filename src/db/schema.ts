@@ -69,7 +69,7 @@ export const bookingRelations = relations(booking, ({ one }) => ({
     references: [room.id],
   }),
   user: one(user, {
-    fields: [booking.id],
+    fields: [booking.user_id],
     references: [user.id],
   }),
 }));

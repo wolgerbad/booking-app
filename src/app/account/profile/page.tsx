@@ -1,5 +1,6 @@
 import { getSession, getUser } from '@/lib/session';
 import ProfileForm from './profile-form';
+import { redirect } from 'next/navigation';
 
 export const metadata = {
   title: 'Aurora - Update Profile',
@@ -7,7 +8,7 @@ export const metadata = {
 
 export default async function Page() {
   const session = await getSession();
-  if (!session) return;
+  if (!session) redirect('/login')
 
   const user = await getUser(session.payload.userId);
 

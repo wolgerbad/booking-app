@@ -24,12 +24,11 @@ export default function ReservationForm({
   user: Session;
 }) {
   const [state, action, pending] = useActionState(bookRoom, initialState);
-  console.log('user', user);
+  
   const nights = useBookingStore((state) => state.nights);
   const startDate = useBookingStore((state) => state.startDate);
   const endDate = useBookingStore((state) => state.endDate);
 
-  console.log('startDate', 'endDate', startDate, endDate);
 
   return (
     <div className="text-white font-semibold text-lg bg-slate-800">

@@ -7,7 +7,6 @@ export default function RoomFilterPicker() {
   const searchParams = useSearchParams();
   const filter = searchParams.get('filter');
 
-  console.log(filter);
 
   return (
     <div className="text-sm md:text-base flex self-end border border-gray-800 font-medium">

@@ -2,10 +2,9 @@
 
 import Link from 'next/link';
 import { FaCalendar, FaHome, FaSignOutAlt } from 'react-icons/fa';
-import { GiHamburgerMenu } from "react-icons/gi";
 import { logout } from '../(auth)/actions';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+
 
 export default function Sidebar() {
   const pathname = usePathname();

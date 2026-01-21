@@ -1,4 +1,4 @@
-import MobileSidebar from './mobile-sidebar';
+
 import Sidebar from './sidebar';
 
 export default function Layout({ children }: { children: React.ReactNode }) {

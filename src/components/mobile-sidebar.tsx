@@ -1,10 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { FaArrowDown, FaArrowUp, FaSignOutAlt, FaUser, FaUsers } from 'react-icons/fa';
-import { MdAccountCircle, MdCabin } from 'react-icons/md';
+import { FaArrowDown, FaArrowUp, FaSignOutAlt, FaUsers } from 'react-icons/fa';
+import { MdCabin } from 'react-icons/md';
 import { usePathname } from 'next/navigation';
-import { Icon } from 'lucide-react';
 import { useState } from 'react';
 import { logout } from '@/app/(auth)/actions';
 
@@ -17,20 +16,12 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
 
   const isActive = (href: string) => pathname === href;
 
-    const [showMore, setShowMore] = useState(false);
-
-  const navItems = [
-    { href: '/rooms', label: 'Rooms', icon: MdCabin },
-    { href: '/about', label: 'About', icon: FaUsers },
-    { href: '/account', label: 'Guest area', icon: MdAccountCircle },
-  ];
+  const [showMore, setShowMore] = useState(false);
 
   return (
     <div className="fixed inset-0 z-40 lg:hidden" onClick={onClose}>
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-
-      {/* Sidebar */}
+      
       <div
         className="absolute left-0 top-20 bottom-0 w-64 flex flex-col gap-6 px-4 py-6 bg-slate-900/95 backdrop-blur-xl border-r border-gray-700 shadow-2xl animate-in slide-in-from-left-full duration-300"
         onClick={(e) => e.stopPropagation()}
@@ -40,10 +31,10 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
             <Link
               href='/rooms'
               onClick={onClose}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xl transition-all duration-200 ${
                 isActive('/rooms')
-                  ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                  : 'text-gray-300 hover:bg-slate-800 hover:text-gray-100'
+                  ? 'bg-slate-500/20 text-white'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-gray-100'
               }`}
             >
               <MdCabin className="text-xl" />
@@ -52,10 +43,10 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
             <Link
               href='/about'
               onClick={onClose}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-xl duration-200 ${
                 isActive('/about')
-                  ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                  : 'text-gray-300 hover:bg-slate-800 hover:text-gray-100'
+                  ? 'bg-slate-500/20 text-white'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-gray-100'
               }`}
             >
               <FaUsers className="text-xl" />
@@ -63,7 +54,7 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
             </Link>
             <div
               onClick={() => setShowMore(prev => !prev)}
-              className='flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-300 hover:bg-slate-800 hover:text-gray-100'
+              className='flex items-center text-xl gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-slate-400 hover:bg-slate-800 hover:text-gray-100'
             >
               <FaUsers className="text-xl" />
               <span className="font-semibold h-full flex-1">Guest room</span>
@@ -73,15 +64,15 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
               
             </div>
             {showMore && <div>
-                <Link href='/account/reservations' onClick={onClose} className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                <Link href='/account/reservations' onClick={onClose} className={`flex text-xl items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                 isActive('/account/reservations')
-                  ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                  : 'text-gray-300 hover:bg-slate-800 hover:text-gray-100'
+                  ? 'bg-slate-500/20 text-white'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-gray-100'
               }`}>Reservations</Link>
-                <Link href='/account/profile' onClick={onClose} className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                <Link href='/account/profile' onClick={onClose} className={`flex text-xl items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                 isActive('/account/profile')
-                  ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                  : 'text-gray-300 hover:bg-slate-800 hover:text-gray-100'
+                  ? 'bg-slate-500/20 text-white'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-gray-100'
               }`}>Profile</Link>
             </div>}
 
@@ -89,7 +80,7 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
 
         <div className="border-t border-gray-700 pt-4">
           <form action={logout} className='w-full'>
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200">
+          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-xl text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200">
             <FaSignOutAlt className="text-xl" />
             <span className="font-semibold">Sign out</span>
           </button>

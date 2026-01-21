@@ -16,7 +16,6 @@ export default async function Page() {
 
   const reservations = await getBookings(session.payload.userId);
 
-  console.log('reservations', reservations);
   return (
     <div>
       <h3 className="text-yellow-500 text-2xl font-semibold mb-6">

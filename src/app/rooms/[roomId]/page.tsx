@@ -10,8 +10,7 @@ import DateContainer from '@/components/date-container';
 import ReservationForm from './reservation-form';
 import { startOfDay } from 'date-fns';
 import { getBookedDates } from '@/lib/booking';
-import { room } from '@/db/schema';
-import { db } from '@/db';
+
 
 export async function generateMetadata({
   params,
@@ -24,12 +23,6 @@ export async function generateMetadata({
   return {
     title: `Aurora - ${room.name}`,
   };
-}
-
-export async function generateStaticParams() {
-  const rooms = await db.select({ roomId: room.id }).from(room);
-
-  return rooms.map((room) => ({ roomId: String(room.roomId) }));
 }
 
 export default async function RoomPage({
@@ -55,7 +48,7 @@ export default async function RoomPage({
 
   return (
     <div className="max-w-7xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 pb-16">
-      {/* Back Button */}
+      
       <Link
         href="/rooms"
         className="inline-flex items-center gap-2 text-gray-300 hover:text-yellow-600 transition-colors mb-8"
@@ -64,8 +57,7 @@ export default async function RoomPage({
         <span>Back to all rooms</span>
       </Link>
 
-      {/* Hero Image Section */}
-
+      
       <div className="grid md:grid-cols-3">
         <div className="border border-gray-800 col-start-1 col-span-1">
           <div className="relative w-full h-[500px] sm:h-[600px]">
@@ -109,7 +101,7 @@ export default async function RoomPage({
               </p>
             </div>
             <div className="">
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-6 pt-8">
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaHotTub className="text-slate-600 text-xl" />
                   <span>Private Hot Tub</span>

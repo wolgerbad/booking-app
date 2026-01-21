@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen pt-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-24">
         <section className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">

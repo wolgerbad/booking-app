@@ -2,6 +2,8 @@ import { getRoom } from '@/lib/room';
 import UpdateReservationForm from './update-reservation-form';
 import { getBooking } from '@/lib/booking';
 import Link from 'next/link';
+import { getSession } from '@/lib/session';
+import { redirect } from 'next/navigation';
 
 export async function generateMetadata({
   params,
@@ -18,6 +20,9 @@ export default async function Page({
 }: {
   params: Promise<{ reservationId: string }>;
 }) {
+  const session = await getSession()
+  if(!session) redirect('/login')
+
   const reservationId = await (await params).reservationId;
 
   const booking = await getBooking(+reservationId);
@@ -36,7 +41,7 @@ export default async function Page({
         </Link>
       </div>
     );
-  console.log('booking', booking);
+ 
   const room = await getRoom(booking.room_id);
 
   return (
