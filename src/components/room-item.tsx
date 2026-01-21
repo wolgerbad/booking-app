@@ -17,7 +17,7 @@ export default function RoomItem({ room }: PropTypes) {
           alt={room.name}
           width={500}
           height={500}
-          className="max-h-40 md:h-full object-cover"
+          className="xs:max-sm:max-h-60 sm:max-md:h-82 w-full md:h-full object-cover"
         />
       </div>
       <div className="col-start-2 col-span-full flex flex-col border border-gray-800">

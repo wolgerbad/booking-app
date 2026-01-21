@@ -16,7 +16,7 @@ export default function RoomFilterPicker() {
           filter === 'all' || !filter ? 'bg-gray-700' : ''
         } px-4 py-2 hover:bg-gray-700`}
       >
-        All cabins
+        All rooms
       </Link>
       <Link
         href="/rooms?filter=sm"
