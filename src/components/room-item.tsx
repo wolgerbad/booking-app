@@ -41,6 +41,7 @@ export default function RoomItem({ room }: PropTypes) {
 
           <Link
             href={`/rooms/${room.id}`}
+            prefetch
             className="text-md flex items-center justify-center gap-2 text-center font-medium px-2 py-4 hover:bg-yellow-500 hover:text-gray-800 transition-all ease duration-200"
           >
             <span className="">Details & reservation</span>

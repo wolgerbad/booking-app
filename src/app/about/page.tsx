@@ -48,20 +48,20 @@ export default function AboutPage() {
               ultimate relaxation and adventure experience.
             </p>
             <ul className="space-y-4 text-lg text-gray-300">
-              <li className="flex items-start gap-3">
-                <span className="text-yellow-500 mt-1">✓</span>
+              <li className="flex items-center gap-3">
+                <span className="text-slate-500 mt-1">•</span>
                 <span>Premium accommodations with world-class amenities</span>
               </li>
-              <li className="flex items-start gap-3">
-                <span className="text-yellow-500 mt-1">✓</span>
+              <li className="flex items-center gap-3">
+                <span className="text-slate-500 mt-1">•</span>
                 <span>Stunning locations surrounded by natural beauty</span>
               </li>
-              <li className="flex items-start gap-3">
-                <span className="text-yellow-500 mt-1">✓</span>
+              <li className="flex items-center gap-3">
+                <span className="text-slate-500 mt-1">•</span>
                 <span>Personalized service tailored to your needs</span>
               </li>
-              <li className="flex items-start gap-3">
-                <span className="text-yellow-500 mt-1">✓</span>
+              <li className="flex items-center gap-3">
+                <span className="text-slate-500 mt-1">•</span>
                 <span>Unforgettable experiences and memories</span>
               </li>
             </ul>
@@ -88,6 +88,7 @@ export default function AboutPage() {
           </p>
           <Link
             href="/rooms"
+            prefetch
             className="inline-block px-8 py-4 bg-yellow-600 hover:bg-yellow-700 text-lg font-medium text-gray-800 transition-colors"
           >
             Explore Our Rooms

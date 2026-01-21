@@ -33,6 +33,7 @@ export default function Navbar() {
           <Link
             href="/"
             className="hover:text-yellow-500 transition-colors duration-200"
+            prefetch
           >
             The Aurora
           </Link>
@@ -41,18 +42,21 @@ export default function Navbar() {
           <Link
             href="/rooms"
             className="hover:text-yellow-500 hidden lg:block transition-colors duration-200"
+            prefetch
           >
             Rooms
           </Link>
           <Link
             href="/about"
             className="hover:text-yellow-500 hidden lg:block transition-colors duration-200"
+            prefetch
           >
             About
           </Link>
           <Link
             href="/account"
             className="hover:text-yellow-500 hidden lg:block transition-colors duration-200"
+            prefetch
           >
             Guest area
           </Link>

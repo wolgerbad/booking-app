@@ -21,7 +21,7 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
   return (
     <div className="fixed inset-0 z-40 lg:hidden" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-      
+
       <div
         className="absolute left-0 top-20 bottom-0 w-64 flex flex-col gap-6 px-4 py-6 bg-slate-900/95 backdrop-blur-xl border-r border-gray-700 shadow-2xl animate-in slide-in-from-left-full duration-300"
         onClick={(e) => e.stopPropagation()}
@@ -29,7 +29,7 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
         <div className="flex-1 flex flex-col gap-3">
 
             <Link
-              href='/rooms'
+              href='/rooms' prefetch
               onClick={onClose}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xl transition-all duration-200 ${
                 isActive('/rooms')
@@ -41,7 +41,7 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
               <span className="font-semibold h-full">Rooms</span>
             </Link>
             <Link
-              href='/about'
+              href='/about' prefetch
               onClick={onClose}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-xl duration-200 ${
                 isActive('/about')
@@ -64,12 +64,12 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
               
             </div>
             {showMore && <div>
-                <Link href='/account/reservations' onClick={onClose} className={`flex text-xl items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                <Link href='/account/reservations' prefetch onClick={onClose} className={`flex text-xl items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                 isActive('/account/reservations')
                   ? 'bg-slate-500/20 text-white'
                   : 'text-slate-400 hover:bg-slate-800 hover:text-gray-100'
               }`}>Reservations</Link>
-                <Link href='/account/profile' onClick={onClose} className={`flex text-xl items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                <Link href='/account/profile' prefetch onClick={onClose} className={`flex text-xl items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                 isActive('/account/profile')
                   ? 'bg-slate-500/20 text-white'
                   : 'text-slate-400 hover:bg-slate-800 hover:text-gray-100'

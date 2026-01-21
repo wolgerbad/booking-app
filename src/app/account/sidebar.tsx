@@ -15,6 +15,7 @@ export default function Sidebar() {
       <div className="flex flex-col gap-4">
         <Link
           href="/account"
+          prefetch
           className={`${
             pathname === '/account' ? 'bg-slate-500/20' : ''
           } flex gap-4 items-center text-xl px-6 py-3 hover:bg-slate-500/20`}
@@ -26,6 +27,7 @@ export default function Sidebar() {
         </Link>
         <Link
           href="/account/reservations"
+          prefetch
           className={`${
             pathname === '/account/reservations' ? 'bg-slate-500/20' : ''
           } flex gap-4 items-center text-xl px-6 py-3 hover:bg-slate-500/20`}
@@ -37,6 +39,7 @@ export default function Sidebar() {
         </Link>
         <Link
           href="/account/profile"
+          prefetch
           className={`${
             pathname === '/account/profile' ? 'bg-slate-500/20' : ''
           } flex gap-4 items-center text-xl px-6 py-3 hover:bg-slate-500/20`}

@@ -27,6 +27,7 @@ export default async function Page() {
           <h3>You have no reservations yet. Go checkout our </h3>{' '}
           <Link
             href="/rooms"
+            prefetch
             className="flex items-center gap-2 text-yellow-600 underline"
           >
             <span>luxury rooms</span>

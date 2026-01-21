@@ -13,6 +13,7 @@ export default function Page() {
       </h3>
       <Link
         href="/account/reservations"
+        prefetch
         className="flex gap-2 items-center text-yellow-600"
       >
         <span className="font-semibold text-xl underline">

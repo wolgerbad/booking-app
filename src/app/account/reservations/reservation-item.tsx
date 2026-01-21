@@ -73,6 +73,7 @@ export default function ReservationItem({
       <div className="flex flex-col">
         <Link
           href={`/account/reservations/edit/${reservation.id}`}
+          prefetch
           className="flex justify-center gap-1 items-center flex-1 px-8 py-4 text-slate-500 font-semibold hover:bg-yellow-600 border-l border-b border-gray-800"
         >
           Edit

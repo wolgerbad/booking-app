@@ -66,7 +66,7 @@ export default function SignupForm() {
 
       <div className="flex justify-between text-gray-200">
         <p>Already have an account?</p>
-        <Link href="/login" className="underline">
+        <Link href="/login" prefetch className="underline">
           Sign in
         </Link>
       </div>

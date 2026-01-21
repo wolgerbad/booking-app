@@ -51,6 +51,7 @@ export default async function RoomPage({
       
       <Link
         href="/rooms"
+        prefetch
         className="inline-flex items-center gap-2 text-gray-300 hover:text-yellow-600 transition-colors mb-8"
       >
         <FaArrowLeft />
@@ -131,7 +132,7 @@ export default async function RoomPage({
           <div className="flex justify-center items-center bg-slate-700 text-white font-semibold text-xl">
             <span>
               You must{' '}
-              <Link className="text-yellow-600 underline" href="/login">
+              <Link className="text-yellow-600 underline" href="/login" prefetch>
                 login
               </Link>{' '}
               to reserve the cabin.

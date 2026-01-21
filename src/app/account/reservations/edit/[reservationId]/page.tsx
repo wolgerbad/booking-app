@@ -35,6 +35,7 @@ export default async function Page({
         </h2>
         <Link
           href="/rooms"
+          prefetch
           className="px-6 py-4 bg-yellow-600 hover:bg-yellow-700 font-semibold text-gray-800 text-lg"
         >
           Go checkout our rooms

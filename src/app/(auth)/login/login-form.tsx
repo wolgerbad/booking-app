@@ -51,7 +51,7 @@ export default function LoginForm() {
 
       <div className="flex justify-between text-gray-200">
         <p>Don&apos;t have an account?</p>
-        <Link href="/signup" className="underline">
+        <Link href="/signup" prefetch className="underline">
           Sign up
         </Link>
       </div>

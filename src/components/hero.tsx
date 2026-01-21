@@ -8,6 +8,7 @@ export default function Hero() {
       </h2>
       <Link
         href="/rooms"
+        prefetch
         className="px-6 sm:px-8 py-4 sm:py-5 bg-yellow-600 hover:bg-yellow-700 text-base sm:text-lg font-medium text-gray-800"
       >
         Explore luxury rooms
