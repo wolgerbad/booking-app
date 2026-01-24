@@ -1,12 +1,14 @@
 'use server';
 
 import { db } from '@/db';
-import { room, user } from '@/db/schema';
+import { user } from '@/db/schema';
 import { comparePasswords, hashPassword, setSession } from '@/lib/session';
 import { eq } from 'drizzle-orm';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { Ratelimit } from "@upstash/ratelimit"
 import z from 'zod';
+import { Redis } from '@upstash/redis';
 
 const signupSchema = z.object({
   name: z.string().min(3),
@@ -19,13 +21,31 @@ const loginSchema = z.object({
   password: z.string(),
 });
 
+const loginLimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(5, '15 m')
+})
+
+const signupLimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(3, '15 m')
+})
+
 export async function login(prev: unknown, formData: FormData) {
+  const h = (await headers())
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
   const result = loginSchema.safeParse({ email, password });
 
   if (!result.success) return { error: result.error.message };
+
+  const ip = h.get('x-ip-token') ?? h.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+  "unknown";
+
+  const rl = await loginLimit.limit(ip)
+
+  if(!rl.success) return {error: 'Too many requests. Try again later'}
 
   const [userExists] = await db
     .select()
@@ -48,6 +68,7 @@ export async function login(prev: unknown, formData: FormData) {
 }
 
 export async function signup(prev: unknown, formData: FormData) {
+  const h = (await headers())
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -59,6 +80,11 @@ export async function signup(prev: unknown, formData: FormData) {
   }
 
   const hashedPassword = await hashPassword(password);
+
+  const ip = h.get('x-ip-token') ?? h.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+  "unknown";
+  const rl = await signupLimit.limit(ip)
+  if(!rl.success) return {error: 'Too many requests. Try again later'}
 
   const [newUser] = await db
     .insert(user)
