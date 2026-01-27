@@ -23,12 +23,14 @@ const loginSchema = z.object({
 
 const loginLimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(5, '15 m')
+  limiter: Ratelimit.slidingWindow(5, '15 m'),
+  prefix: 'theaurora'
 })
 
 const signupLimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(3, '15 m')
+  limiter: Ratelimit.slidingWindow(3, '15 m'),
+  prefix: 'theaurora'
 })
 
 export async function login(prev: unknown, formData: FormData) {
