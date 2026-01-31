@@ -16,7 +16,7 @@ export default async function LoginPage() {
             Welcome back! Please enter your details.
           </p>
         </div>
-        <div className="rounded-2xl border border-zinc-700 p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="border border-zinc-700 p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <LoginForm />
         </div>
       </div>

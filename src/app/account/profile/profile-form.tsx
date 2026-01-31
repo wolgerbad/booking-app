@@ -70,7 +70,7 @@ function UpdateButton() {
         pending
           ? 'bg-yellow-700 cursor-not-allowed'
           : 'bg-yellow-600 hover:bg-yellow-700 cursor-pointer'
-      } self-end text-slate-800 text-lg font-semibold px-8 py-7 `}
+      } self-end rounded-none text-slate-800 text-lg font-semibold px-8 py-7 `}
     >
       {pending ? 'Updating..' : 'Update profile'}
     </Button>

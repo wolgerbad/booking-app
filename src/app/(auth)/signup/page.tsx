@@ -18,7 +18,7 @@ export default async function SignupPage() {
             Get started by creating a new account.
           </p>
         </div>
-        <div className="rounded-2xl border border-gray-700 bg-transparent p-8 shadow-sm">
+        <div className="border border-gray-700 bg-transparent p-8 shadow-sm">
           <SignupForm />
         </div>
       </div>

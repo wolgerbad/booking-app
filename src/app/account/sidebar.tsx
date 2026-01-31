@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FaCalendar, FaHome, FaSignOutAlt } from 'react-icons/fa';
 import { logout } from '../(auth)/actions';
 import { usePathname } from 'next/navigation';
+import { MdAccountCircle, MdOutlineAccountCircle } from 'react-icons/md';
 
 
 export default function Sidebar() {
@@ -44,15 +45,15 @@ export default function Sidebar() {
             pathname === '/account/profile' ? 'bg-slate-500/20' : ''
           } flex gap-4 items-center text-xl px-6 py-3 hover:bg-slate-500/20`}
           >
-          <span>
-            <FaHome />
+          <span className='text-2xl'>
+          <MdAccountCircle />
           </span>
           <span>Guest profile</span>
         </Link>
       </div>
       <button
         onClick={logout}
-        className="flex gap-4 items-center text-xl hover:bg-slate-500/20 px-6 py-3"
+        className="flex gap-4 items-center text-xl hover:bg-slate-500/20 px-6 py-3 cursor-pointer"
         >
         <span>
           <FaSignOutAlt />
