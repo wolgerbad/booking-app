@@ -88,6 +88,10 @@ export async function signup(prev: unknown, formData: FormData) {
   const rl = await signupLimit.limit(ip)
   if(!rl.success) return {error: 'Too many requests. Try again later'}
 
+  const userExists = await db.select().from(user).where(eq(user.email, email))
+
+  if(userExists?.length) return {error: 'User already exists'}
+
   const [newUser] = await db
     .insert(user)
     .values({ name, email, hashed_password: hashedPassword })
