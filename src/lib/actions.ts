@@ -48,6 +48,7 @@ export async function bookRoom(prev: unknown, formData: FormData) {
     guest: data.guest,
   });
 
+  revalidatePath('/account/reservations')
   redirect('/rooms/success');
 }
 

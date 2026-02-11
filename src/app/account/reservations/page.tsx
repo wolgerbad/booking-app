@@ -9,6 +9,8 @@ export const metadata = {
   title: 'Aurora - Reservations',
 };
 
+export const revalidate = 3600;
+
 export default async function Page() {
   const session = await getSession();
 

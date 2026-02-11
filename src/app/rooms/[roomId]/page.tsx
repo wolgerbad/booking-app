@@ -102,18 +102,18 @@ export default async function RoomPage({
               </p>
             </div>
             <div className="">
-              <div className="flex flex-col gap-6 pt-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8">
                 <div className="flex items-center gap-3 text-gray-300">
-                  <FaHotTub className="text-slate-600 text-xl" />
+                  <FaHotTub className="text-slate-500 text-xl" />
                   <span>Private Hot Tub</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
-                  <FaUtensils className="text-slate-600 text-xl" />
+                  <FaUtensils className="text-slate-500 text-xl" />
                   <span>Full Kitchen</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
-                  <FaEyeSlash className="text-slate-600 text-xl" />
-                  <span>Privacy 100%</span>
+                  <FaEyeSlash className="text-slate-500 text-xl" />
+                  <span>Privacy <span className='font-semibold text-lg'>100%</span> guaranteed</span>
                 </div>
               </div>
             </div>

@@ -2,7 +2,7 @@
 
 import { Reservation } from './reservation-list';
 import Image from 'next/image';
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays, format, isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
 import { deleteBooking } from '@/lib/actions';
 import { useFormStatus } from 'react-dom';
@@ -20,6 +20,8 @@ export default function ReservationItem({
   );
   const formattedStartDate = format(reservation.start_date, 'eee, MMM dd yyyy');
   const formattedEndDate = format(reservation.end_date, 'eee, MMM dd yyyy');
+
+  const isPast = isBefore(reservation.start_date, new Date())
 
   const totalPrice = totalNights * Number(reservation.room_price);
 
@@ -42,14 +44,12 @@ export default function ReservationItem({
             </h2>
             <span
               className={`hidden lg:block ${
-                reservation.status === 'upcoming'
-                  ? 'bg-green-600 text-green-200'
-                  : reservation.status === 'pending'
+                !isPast
                   ? 'bg-green-600 text-green-200'
                   : 'bg-red-600 text-red-200'
               } uppercase px-2 py-1 text-sm font-black rounded-xs`}
             >
-              {reservation.status}
+              {isPast ? 'Past' : 'Upcoming'}
             </span>
           </div>
           <div className="font-semibold text-slate-400 text-sm sm:text-base ">
@@ -71,13 +71,13 @@ export default function ReservationItem({
         </div>
       </div>
       <div className="flex flex-col">
-        <Link
+       {!isPast && <Link
           href={`/account/reservations/edit/${reservation.id}`}
           prefetch
           className="flex justify-center gap-1 items-center flex-1 px-8 py-4 text-slate-500 font-semibold hover:bg-yellow-600 border-l border-b border-gray-800"
         >
           Edit
-        </Link>
+        </Link>}
         <form action={deleteBooking} className='flex-1'>
           <input type="hidden" value={reservation.id} name="bookingId" />
           <DeleteButton />
