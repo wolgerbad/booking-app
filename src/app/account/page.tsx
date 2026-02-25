@@ -7,8 +7,8 @@ export const metadata = {
 
 export default async function Page() {
   const session = await getSession();
-  if (!session) redirect('/login');
-
+  if(!session) redirect('/login');
+  
   const user = await getUser(session.payload.userId);
 
   return (

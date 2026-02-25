@@ -47,7 +47,7 @@ export async function login(prev: unknown, formData: FormData) {
 
   const rl = await loginLimit.limit(ip)
 
-  if(!rl.success) return {error: 'Too many requests. Try again later'}
+  if(!rl.success) return {error: 'Too many attempts. Try again later'}
 
   const [userExists] = await db
     .select()
@@ -86,7 +86,7 @@ export async function signup(prev: unknown, formData: FormData) {
   const ip = h.get('x-ip-token') ?? h.get("x-forwarded-for")?.split(",")[0]?.trim() ??
   "unknown";
   const rl = await signupLimit.limit(ip)
-  if(!rl.success) return {error: 'Too many requests. Try again later'}
+  if(!rl.success) return {error: 'Too many sign ups. Try again later'}
 
   const userExists = await db.select().from(user).where(eq(user.email, email))
 

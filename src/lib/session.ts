@@ -33,7 +33,6 @@ export async function setSession(payload: JwtPayload) {
     .setExpirationTime('3 days')
     .sign(secret);
 
-  console.log('jwt', token);
   (await cookies()).set('jwt', token, {
     httpOnly: true,
     expires: expiresInThreeDays,

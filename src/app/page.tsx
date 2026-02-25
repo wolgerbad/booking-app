@@ -15,6 +15,7 @@ export default async function Home() {
         height={1080}
         className="fixed inset-0 w-full -z-10 object-cover h-full"
         quality={100}
+        loading='eager'
         src="https://rjmixcltcmxukccddxxt.supabase.co/storage/v1/object/public/image%20bucket/bg.webp"
         alt="Application Main View"
       />

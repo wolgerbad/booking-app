@@ -59,7 +59,7 @@ export default function SignupForm() {
       <button
         type="submit"
         disabled={pending}
-        className={`${pending ? 'bg-yellow-700 cursor-not-allowed' : 'bg-yellow-600 cursor-pointer'} w-full  cursor-pointer px-6 py-4 text-base font-medium text-gray-800 transition-colors hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2`}
+        className={`${pending ? 'bg-yellow-700 cursor-not-allowed' : 'bg-yellow-600 cursor-pointer'} w-full px-6 py-4 text-base font-medium text-gray-800 transition-colors hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2`}
       >
         {pending ? 'Creating Account...' : 'Create Account'}
       </button>

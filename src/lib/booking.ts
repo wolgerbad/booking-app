@@ -1,6 +1,7 @@
 import { db } from '@/db';
 import { booking, room } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import { redis } from './redis';
 
 export async function getBookedDates() {
   return await db
@@ -9,7 +10,10 @@ export async function getBookedDates() {
 }
 
 export async function getBookings(userId: number) {
-  return await db
+  const exists = await redis.get('bookings');
+  if(exists) return exists;
+
+  const bookings = await db
     .select({
       id: booking.id,
       start_date: booking.start_date,
@@ -25,6 +29,9 @@ export async function getBookings(userId: number) {
     .from(booking)
     .where(eq(booking.user_id, userId))
     .innerJoin(room, eq(room.id, booking.room_id));
+
+    redis.set('bookings', bookings)
+    return bookings;
 }
 
 export async function getBooking(

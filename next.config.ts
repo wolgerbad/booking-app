@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
         'https://rjmixcltcmxukccddxxt.supabase.co/storage/v1/object/public/**'
       ),
     ],
+    qualities: [75, 100]
   },
   typescript: {
     ignoreBuildErrors: true,

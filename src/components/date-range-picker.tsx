@@ -84,8 +84,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
       if (range.from) {
         // Disable dates before the selected start date
         // and dates more than 3 days after the start date (max 4 days = 3 nights)
-        console.log('range.from', range.from);
-
         const daysDifference = differenceInDays(date, range.from);
         if (daysDifference < 0 || daysDifference > 3) {
           return true;

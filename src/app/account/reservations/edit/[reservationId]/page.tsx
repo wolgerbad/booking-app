@@ -20,9 +20,6 @@ export default async function Page({
 }: {
   params: Promise<{ reservationId: string }>;
 }) {
-  const session = await getSession()
-  if(!session) redirect('/login')
-
   const reservationId = await (await params).reservationId;
 
   const booking = await getBooking(+reservationId);

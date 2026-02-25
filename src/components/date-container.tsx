@@ -11,14 +11,10 @@ export default function DateContainer({
   bookedDates: { from: Date; to: Date }[];
   roomPrice: string;
 }) {
-  const nights = useBookingStore((state) => state.nights);
   const setNights = useBookingStore((state) => state.setNights);
   const setStartDate = useBookingStore((state) => state.setStartDate);
   const setEndDate = useBookingStore((state) => state.setEndDate);
 
-  const totalPrice = nights && nights * 500;
-
-  console.log('totalPrice', totalPrice);
   return (
     <DateRangePicker
       bookedDates={bookedDates}

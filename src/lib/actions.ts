@@ -7,6 +7,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import z from 'zod';
+import { redis } from './redis';
 
 const formSchema = z.object({
   additional_note: z.string().optional(),
@@ -37,7 +38,6 @@ export async function bookRoom(prev: unknown, formData: FormData) {
   const result = formSchema.safeParse(data);
 
   if (result.error) return { error: result.error.message };
-  console.log('error', result.error);
 
   await db.insert(booking).values({
     additional_note,
@@ -48,6 +48,8 @@ export async function bookRoom(prev: unknown, formData: FormData) {
     guest: data.guest,
   });
 
+  await redis.del('bookings')
+
   revalidatePath('/account/reservations')
   redirect('/rooms/success');
 }
@@ -56,13 +58,13 @@ export async function updateBooking(formData: FormData) {
   const guest = formData.get('guest') as string;
   const bookingId = formData.get('bookingId') as string;
 
-  console.log('guest', guest);
-
   await db
     .update(booking)
     .set({ guest: +guest })
     .where(eq(booking.id, +bookingId));
 
+  
+  await redis.del('bookings');
   redirect('/account/reservations');
 }
 
@@ -71,6 +73,7 @@ export async function deleteBooking(formData: FormData) {
 
   await db.delete(booking).where(eq(booking.id, +bookingId));
 
+  await redis.del('bookings');
   revalidatePath('/account/reservations');
 }
 
