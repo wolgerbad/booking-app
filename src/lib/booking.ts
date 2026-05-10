@@ -10,9 +10,6 @@ export async function getBookedDates() {
 }
 
 export async function getBookings(userId: number) {
-  const exists = await redis.get('bookings');
-  if(exists) return exists;
-
   const bookings = await db
     .select({
       id: booking.id,
@@ -30,8 +27,7 @@ export async function getBookings(userId: number) {
     .where(eq(booking.user_id, userId))
     .innerJoin(room, eq(room.id, booking.room_id));
 
-    redis.set('bookings', bookings)
-    return bookings;
+  return bookings;
 }
 
 export async function getBooking(
